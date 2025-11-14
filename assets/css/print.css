@@ -1,0 +1,55 @@
+@media print {
+
+  /* Скрываем то, что на печати не нужно */
+  header,
+  footer,
+  .burger,
+  .burger__menu,
+  .banner,
+  nav {
+    display: none !important;
+  }
+
+  /* Тело страницы: чёрный текст, белый фон */
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-family: "Times New Roman", serif;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  /* Сетка продуктов – одна колонка, удобная для печати */
+  .products {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr); /* две колонки */
+    gap: 0.8rem; /* расстояние между карточками */
+  }
+
+  .product-card {
+    border: 1px solid #000;
+    box-shadow: none;
+    margin-bottom: 1rem;
+    page-break-inside: avoid; /* чтобы карточка не разрывалась между страницами */
+    padding: 0.8rem 1rem;
+  }
+
+  /* Убираем фоны и цвета */
+  .product-card,
+  .product-text {
+    background: none !important;
+    color: #000 !important;
+  }
+
+  .product-img {
+    width: 100%;
+    height: 100px; /* меньше, чем на экране */
+    margin-bottom: 0.3rem;
+  }
+
+  .product-button {
+    display: none !important;
+  }
+
+
+}
