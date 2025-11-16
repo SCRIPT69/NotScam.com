@@ -90,5 +90,6 @@
 
     <script src="assets/js/burger.js"></script>
     <script type="module" src="assets/js/validation/validation_register.js"></script>
+    <script src="assets/js/cardInputsFormatter.js"></script>
 </body>
 </html>
