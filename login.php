@@ -39,15 +39,17 @@
     </header>
     <main>
         <section class="register">
-            <h2 class="register__title">Přihlášení</h3>
-            <form action="" class="register__form">
+            <h2 class="register__title">Přihlášení</h2>
+            <form action="" method="POST" id="loginform" class="register__form">
                 <div class="register__inputcontainer">
                     <label for="email" class="register__label">E-mail</label>
-                    <input type="email" id="email" name="email" class="register__input" require>
+                    <input type="email" id="email" name="email" class="register__input">
+                    <p class="validation-error"></p>
                 </div>
                 <div class="register__inputcontainer">
                     <label for="password" class="register__label">Heslo</label>
-                    <input type="password" id="password" name="password" class="register__input" require>
+                    <input type="password" id="password" name="password" class="register__input">
+                    <p class="validation-error"></p>
                 </div>
                 <button class="register__button">Přihlásit se</button>
             </form>
@@ -57,6 +59,7 @@
         <p>© 2025 NotScam.com</p>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/burger.js"></script>
+    <script type="module" src="assets/js/validation/validation_login.js"></script>
 </body>
 </html>
