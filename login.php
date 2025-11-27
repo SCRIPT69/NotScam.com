@@ -1,3 +1,8 @@
+<?php
+require_once 'includes/session_manager.php';
+require_once 'includes/form_helpers.php';
+?>
+
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -29,8 +34,8 @@
                 <nav>
                     <ul class="burger__ul">
                         <li><button id="burger-exitButton" class="burger__exitButton">×</button></li>
-                        <li><a class="burger__ul__link_chosen" href="index.php">Hlavní stránka</a></li>
-                        <li><a class="burger__ul__link" href="login.php">Přihlášení</a></li>
+                        <li><a class="burger__ul__link" href="index.php">Hlavní stránka</a></li>
+                        <li><a class="burger__ul__link_chosen" href="login.php">Přihlášení</a></li>
                         <li><a class="burger__ul__link" href="register.php">Registrace</a></li>
                     </ul>
                 </nav>
@@ -40,16 +45,20 @@
     <main>
         <section class="register">
             <h2 class="register__title">Přihlášení</h2>
-            <form action="" method="POST" id="loginform" class="register__form">
+            <form action="includes/login/login_process.php" method="POST" id="loginform" class="register__form">
                 <div class="register__inputcontainer">
                     <label for="email" class="register__label">E-mail</label>
-                    <input type="email" id="email" name="email" class="register__input">
-                    <p class="validation-error"></p>
+                    <input type="email" id="email" name="email" class="register__input" value="<?= getFormData('login', 'email');?>" required>
+                    <?php
+                        generateErrorBlock('login', 'email');
+                    ?>
                 </div>
                 <div class="register__inputcontainer">
                     <label for="password" class="register__label">Heslo</label>
-                    <input type="password" id="password" name="password" class="register__input">
-                    <p class="validation-error"></p>
+                    <input type="password" id="password" name="password" class="register__input" required>
+                    <?php
+                        generateErrorBlock('login', 'password');
+                    ?>
                 </div>
                 <button class="register__button">Přihlásit se</button>
             </form>
@@ -63,3 +72,8 @@
     <script type="module" src="assets/js/validation/validation_login.js"></script>
 </body>
 </html>
+
+<?php
+    unset($_SESSION['login-errors']);
+    unset($_SESSION['login-data']);
+?>

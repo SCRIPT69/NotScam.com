@@ -1,0 +1,27 @@
+# Ignore composer vendor directory (if you ever use Composer)
+vendor/
+
+# Ignore environment-specific configs
+includes/config.php
+
+# Ignore session files (if stored locally)
+session/
+
+# Ignore log files
+*.log
+
+# Ignore OS junk
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/project settings
+.idea/
+.vscode/
+*.iml
+
+# Ignore build/cache
+cache/
+*.cache
+
+# Ignore compiled assets
+public/assets/dist/

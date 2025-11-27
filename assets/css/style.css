@@ -442,9 +442,8 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
+  padding-top: 2.5rem;
   padding-bottom: 11rem;
-  color: rgb(187, 9, 9);
 }
 .register__title {
   font-weight: 800;
@@ -452,7 +451,11 @@ footer {
   color: rgb(49, 49, 49);
 }
 .register__form {
-  padding-top: 2rem;
+  margin-top: 1.5rem;
+  padding: 2.5rem 5rem;
+  border-radius: 20px;
+  background-color: rgb(255,255,255);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -479,7 +482,7 @@ footer {
   height: 2.3rem;
   font-size: 1.2rem;
   padding: 0.2rem 0.5rem;
-  border: 1px solid rgb(234, 234, 234);
+  border: 1px solid rgb(210, 210, 210);
 }
 .register__input-error {
   border: 1px solid rgb(255, 0, 0);
@@ -509,6 +512,25 @@ footer {
 }
 .register__cardbottominput {
   width: 100%;
+}
+.register__checkboxcontainer {
+  max-width: 18rem;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0.2rem;
+  gap: 0.5rem;
+}
+.register__checkbox {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.register__checkboxlabel {
+  max-width: 15rem;
+  font-size: 1.1rem;
+  color: rgb(101, 101, 101);
+}
+.checkboxerror {
+  flex: 1;
 }
 .register__button {
   margin-top: 0.6rem;
@@ -542,6 +564,12 @@ footer {
   .register__form {
     padding-top: 1.8rem;
     gap: 0.6rem;
+    padding: 2.5rem 3rem;
+  }
+}
+@media (max-width: 520px) {
+  .register__form {
+    padding: 1.5rem 1.5rem;
   }
 }
 @media (max-width: 340px) {
@@ -553,6 +581,12 @@ footer {
   }
   .register__cardbottominputcontainer {
     max-width: 16rem;
+  }
+  .register__checkboxcontainer {
+    max-width: 16rem;
+  }
+  .register__checkboxlabel {
+    max-width: 13rem;
   }
   .validation-error {
     max-width: 16rem;
@@ -567,6 +601,12 @@ footer {
   }
   .register__cardbottominputcontainer {
     max-width: 14rem;
+  }
+  .register__checkboxcontainer {
+    max-width: 14rem;
+  }
+  .register__checkboxlabel {
+    max-width: 11rem;
   }
   .register__pwdinfo {
     max-width: 12rem;

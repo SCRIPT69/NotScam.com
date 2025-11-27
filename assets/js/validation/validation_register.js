@@ -8,9 +8,10 @@ function validateRegisterForm(event) {
     const cardNumberInput = document.getElementById("cardnumber");
     const cardExpirationInput = document.getElementById("cardexpiration");
     const cardCVVInput = document.getElementById("cardcvv");
+    const checkboxAgree = document.getElementById("checkboxagree");
 
     let hasErrors = false;
-    const inputs = [nameInput, emailInput, passwordInput, passwordConfirmInput, cardNumberInput, cardExpirationInput, cardCVVInput];
+    const inputs = [nameInput, emailInput, passwordInput, passwordConfirmInput, cardNumberInput, cardExpirationInput, cardCVVInput, checkboxAgree];
     for (let input of inputs) {
         clearError(input);
     }
@@ -34,6 +35,9 @@ function validateRegisterForm(event) {
         hasErrors = true;
     }
     if (checkCardCVVForErrors(cardCVVInput)) {
+        hasErrors = true;
+    }
+    if (checkCheckboxAgreeForErrors(checkboxAgree)) {
         hasErrors = true;
     }
 
@@ -134,12 +138,30 @@ function checkCardExpirationDateForErrors(cardExpirationInput) {
     }
 
     const month = Number(match[1]);
+    const year = Number(match[2]); // poslední dvě cifry
 
     // měsíc může být pouze 1–12
     if (month < 1 || month > 12) {
         setError(cardExpirationInput, "Zadejte správnou platnost karty!");
         return true;
     }
+
+    // získáme aktuální rok (YY) a měsíc (1–12)
+    const now = new Date();
+    const currentYear = Number(now.getFullYear().toString().slice(-2)); // YY
+    const currentMonth = now.getMonth() + 1; // 1–12
+
+    // rok nesmí být menší než aktuální
+    if (year < currentYear) {
+        setError(cardExpirationInput, "Karta už není platná!");
+        return true;
+    }
+    // pokud je rok stejný, měsíc nesmí být menší
+    if (year === currentYear && month < currentMonth) {
+        setError(cardExpirationInput, "Karta už není platná!");
+        return true;
+    }
+    
     return false;
 }
 
@@ -151,6 +173,14 @@ function checkCardCVVForErrors(cardCVVInput) {
     let value = cardCVVInput.value;
     if (value.length != 3 || !/^\d+$/.test(value)) {
         setError(cardCVVInput, "Zadejte správné CVC/CVV!");
+        return true;
+    }
+    return false;
+}
+
+function checkCheckboxAgreeForErrors(checkboxAgree) {
+    if (!checkboxAgree.checked) {
+        setError(checkboxAgree, "Musíte souhlasit s podmínkami!");
         return true;
     }
     return false;
