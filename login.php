@@ -43,24 +43,27 @@ require_once 'includes/form_helpers.php';
         </div>
     </header>
     <main>
-        <section class="register">
-            <h2 class="register__title">Přihlášení</h2>
-            <form action="includes/login/login_process.php" method="POST" id="loginform" class="register__form">
-                <div class="register__inputcontainer">
-                    <label for="email" class="register__label">E-mail</label>
-                    <input type="email" id="email" name="email" class="register__input" value="<?= getFormData('login', 'email');?>" required>
+        <section class="auth">
+            <h2 class="auth__title">Přihlášení</h2>
+            <form action="includes/login/login_process.php" method="POST" id="loginform" class="auth__form">
+                <div class="auth__inputcontainer">
+                    <label for="email" class="auth__label">E-mail</label>
+                    <input type="email" id="email" name="email" class="auth__input" value="<?= getFormData('login', 'email');?>" required>
                     <?php
                         generateErrorBlock('login', 'email');
                     ?>
                 </div>
-                <div class="register__inputcontainer">
-                    <label for="password" class="register__label">Heslo</label>
-                    <input type="password" id="password" name="password" class="register__input" required>
+                <div class="auth__inputcontainer">
+                    <label for="password" class="auth__label">Heslo</label>
+                    <div class="auth__password-wrapper">
+                        <input type="password" id="password" name="password" class="auth__input" required>
+                        <button type="button" id="showPwdButton" class="auth__password-showPwdButton">👁️</button>
+                    </div>
                     <?php
                         generateErrorBlock('login', 'password');
                     ?>
                 </div>
-                <button class="register__button">Přihlásit se</button>
+                <button class="auth__button">Přihlásit se</button>
             </form>
         </section>
     </main>
@@ -68,8 +71,9 @@ require_once 'includes/form_helpers.php';
         <p>© 2025 NotScam.com</p>
     </footer>
 
-    <script src="assets/js/burger.js"></script>
+    <script src="assets/js/UI/burger.js"></script>
     <script type="module" src="assets/js/validation/validation_login.js"></script>
+    <script src="assets/js/UI/showPwdButton.js"></script>
 </body>
 </html>
 

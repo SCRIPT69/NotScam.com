@@ -94,6 +94,6 @@
         <p>© 2025 NotScam.com</p>
     </footer>
 
-    <script src="assets/js/burger.js"></script>
+    <script src="assets/js/UI/burger.js"></script>
 </body>
 </html>

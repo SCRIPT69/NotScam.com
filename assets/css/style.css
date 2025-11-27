@@ -438,19 +438,19 @@ footer {
 
 
 
-.register {
+.auth {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 2.5rem;
   padding-bottom: 11rem;
 }
-.register__title {
+.auth__title {
   font-weight: 800;
   font-size: 2.6rem;
   color: rgb(49, 49, 49);
 }
-.register__form {
+.auth__form {
   margin-top: 1.5rem;
   padding: 2.5rem 5rem;
   border-radius: 20px;
@@ -462,21 +462,21 @@ footer {
   justify-content: center;
   gap: 0.8rem;
 }
-.register__namecontainer {
+.auth__namecontainer {
   display: flex;
   gap: 0.8rem;
 }
-.register__inputcontainer {
+.auth__inputcontainer {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
 }
-.register__label {
+.auth__label {
   font-size: 1.2rem;
   color: rgb(101, 101, 101);
   margin-left: 0.3rem;
 }
-.register__input {
+.auth__input {
   border-radius: 8px;
   width: 18rem;
   height: 2.3rem;
@@ -484,13 +484,27 @@ footer {
   padding: 0.2rem 0.5rem;
   border: 1px solid rgb(210, 210, 210);
 }
-.register__input-error {
+.auth__input-error {
   border: 1px solid rgb(255, 0, 0);
 }
-.register__input::placeholder {
+.auth__input::placeholder {
   color: rgb(148, 148, 148);
 }
-.register__pwdinfo {
+.auth__password-wrapper {
+    position: relative;
+    width: 100%;
+}
+.auth__password-showPwdButton {
+    position: absolute;
+    right: -1.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+.auth__pwdinfo {
   margin-top: 0.2rem;
   font-size: 1.1rem;
   color: rgb(82, 82, 82);
@@ -498,33 +512,33 @@ footer {
   margin-left: 0.3rem;
   max-width: 16rem;
 }
-.register__cardtopinputcontainer {
+.auth__cardtopinputcontainer {
   margin-top: 0.5rem;
 }
-.register__cardbottominputcontainer {
+.auth__cardbottominputcontainer {
   max-width: 18rem;
   display: flex;
   justify-content: space-between;
 }
-.register__cardbottominputcontainer div {
+.auth__cardbottominputcontainer div {
   width: 48%;
   justify-content: flex-start;
 }
-.register__cardbottominput {
+.auth__cardbottominput {
   width: 100%;
 }
-.register__checkboxcontainer {
+.auth__checkboxcontainer {
   max-width: 18rem;
   display: flex;
   flex-wrap: wrap;
   padding-left: 0.2rem;
   gap: 0.5rem;
 }
-.register__checkbox {
+.auth__checkbox {
   width: 1.3rem;
   height: 1.3rem;
 }
-.register__checkboxlabel {
+.auth__checkboxlabel {
   max-width: 15rem;
   font-size: 1.1rem;
   color: rgb(101, 101, 101);
@@ -532,7 +546,7 @@ footer {
 .checkboxerror {
   flex: 1;
 }
-.register__button {
+.auth__button {
   margin-top: 0.6rem;
   border-radius: 15px;
   background-color: rgb(79, 45, 153);
@@ -542,7 +556,7 @@ footer {
   padding: 0.5rem 1rem;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-.register__button:hover {
+.auth__button:hover {
   background-color: rgb(50, 28, 99);
   color: rgb(250, 255, 148);
 }
@@ -554,38 +568,41 @@ footer {
 }
 
 @media (max-width: 980px) {
-  .register__title {
+  .auth__title {
     font-size: 2.2rem;
   }
-  .register {
+  .auth {
     padding-top: 2.4rem;
     padding-bottom: 8rem;
   }
-  .register__form {
+  .auth__form {
     padding-top: 1.8rem;
     gap: 0.6rem;
     padding: 2.5rem 3rem;
   }
 }
 @media (max-width: 520px) {
-  .register__form {
+  .auth__form {
     padding: 1.5rem 1.5rem;
+  }
+  .auth__password-showPwdButton {
+    right: -1.6rem;
   }
 }
 @media (max-width: 340px) {
-  .register__input {
+  .auth__input {
     width: 16rem;
   }
-  .register__cardbottominput {
+  .auth__cardbottominput {
     width: 100%;
   }
-  .register__cardbottominputcontainer {
+  .auth__cardbottominputcontainer {
     max-width: 16rem;
   }
-  .register__checkboxcontainer {
+  .auth__checkboxcontainer {
     max-width: 16rem;
   }
-  .register__checkboxlabel {
+  .auth__checkboxlabel {
     max-width: 13rem;
   }
   .validation-error {
@@ -593,22 +610,22 @@ footer {
   }
 }
 @media (max-width: 310px) {
-  .register__input {
+  .auth__input {
     width: 14rem;
   }
-  .register__cardbottominput {
+  .auth__cardbottominput {
     width: 100%;
   }
-  .register__cardbottominputcontainer {
+  .auth__cardbottominputcontainer {
     max-width: 14rem;
   }
-  .register__checkboxcontainer {
+  .auth__checkboxcontainer {
     max-width: 14rem;
   }
-  .register__checkboxlabel {
+  .auth__checkboxlabel {
     max-width: 11rem;
   }
-  .register__pwdinfo {
+  .auth__pwdinfo {
     max-width: 12rem;
     font-size: 0.9rem;
   }
