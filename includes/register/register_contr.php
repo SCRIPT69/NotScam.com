@@ -45,10 +45,26 @@ function validateRegister(array $data): array {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function returnErrorIfEmpty(string $value) {
+function returnErrorIfEmpty(string $value): ?string {
     if (trim($value) == "") {
         return "Vyplňte pole!";
     }
+    return null;
+}
+
+/**
+ * Vrací chybu, pokud je value příliš dlouhé.
+ *
+ * @param string $value Hodnota pole.
+ * @param int $maxLength Maximální délka hodnoty.
+ *
+ * @return string|null Chybová zpráva nebo null.
+ */
+function returnErrorIfReachedLengthLimit(string $value, int $maxLength): ?string {
+    if (mb_strlen($value) > $maxLength) {
+        return "Překročena maximální délka!";
+    }
+    return null;
 }
 
 /**
@@ -58,12 +74,14 @@ function returnErrorIfEmpty(string $value) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getNameError(string $name) {
+function getNameError(string $name): ?string {
     if ($error = returnErrorIfEmpty($name)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($name, 40)) return $error;
 
     if (!preg_match('/^[A-Za-zÀ-ž]+(?: [A-Za-zÀ-ž]+)*$/u', $name) || mb_strlen(trim($name)) < 2) {
         return "Zadejte své pravé jméno!";
     }
+    return null;
 }
 
 /**
@@ -73,12 +91,14 @@ function getNameError(string $name) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getEmailError(string $email) {
+function getEmailError(string $email): ?string {
     if ($error = returnErrorIfEmpty($email)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($email, 100)) return $error;
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Zadejte platný e-mail!";
     }
+    return null;
 }
 
 /**
@@ -88,8 +108,9 @@ function getEmailError(string $email) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getPasswordError(string $password) {
+function getPasswordError(string $password): ?string {
     if ($error = returnErrorIfEmpty($password)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($password, 100)) return $error;
 
     if (mb_strlen($password) < 9) {
         return "Heslo musí mít alespoň 9 znaků!";
@@ -102,6 +123,7 @@ function getPasswordError(string $password) {
     ) {
         return "Heslo musí obsahovat malé písmeno, velké písmeno, a číslici a specialní znak!";
     }
+    return null;
 }
 
 /**
@@ -112,12 +134,14 @@ function getPasswordError(string $password) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getPasswordConfirmError(string $passwordConfirm, string $password) {
+function getPasswordConfirmError(string $passwordConfirm, string $password): ?string {
     if ($error = returnErrorIfEmpty($passwordConfirm)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($passwordConfirm, 100)) return $error;
 
     if ($passwordConfirm != $password) {
         return "Hesla se neshodují!";
     }
+    return null;
 }
 
 /**
@@ -127,8 +151,9 @@ function getPasswordConfirmError(string $passwordConfirm, string $password) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getCardNumberError(string $cardNumber) {
+function getCardNumberError(string $cardNumber): ?string {
     if ($error = returnErrorIfEmpty($cardNumber)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($cardNumber, 19)) return $error;
 
     // musí mít 16 znaků,
     // musí obsahovat pouze čísla
@@ -136,6 +161,7 @@ function getCardNumberError(string $cardNumber) {
     if (mb_strlen($value) != 16 || !preg_match('/^\d+$/', $value)) {
         return "Zadejte platné číslo karty!";
     }
+    return null;
 }
 
 /**
@@ -145,8 +171,9 @@ function getCardNumberError(string $cardNumber) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getCardExpirationError(string $cardExpiration) {
+function getCardExpirationError(string $cardExpiration): ?string {
     if ($error = returnErrorIfEmpty($cardExpiration)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($cardExpiration, 5)) return $error;
 
     $regex = '/^(\d{1,2})\/(\d{2})$/'; // formát MM/YY
 
@@ -174,7 +201,7 @@ function getCardExpirationError(string $cardExpiration) {
     if ($year === $currentYear && $month < $currentMonth) {
         return "Karta už není platná!";
     }
-
+    return null;
 }
 
 /**
@@ -184,12 +211,13 @@ function getCardExpirationError(string $cardExpiration) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getCardCVVError(string $cardCVV) {
+function getCardCVVError(string $cardCVV): ?string {
     if ($error = returnErrorIfEmpty($cardCVV)) return $error;
 
     if (mb_strlen($cardCVV) != 3 || !ctype_digit($cardCVV)) {
         return "Zadejte správné CVC/CVV!";
     }
+    return null;
 }
 
 /**
@@ -199,8 +227,9 @@ function getCardCVVError(string $cardCVV) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getCheckboxAgreeError($checkboxAgree) {
+function getCheckboxAgreeError($checkboxAgree): ?string {
     if (!$checkboxAgree) {
         return "Musíte souhlasit s podmínkami!";
     }
+    return null;
 }

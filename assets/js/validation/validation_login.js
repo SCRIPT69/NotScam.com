@@ -35,8 +35,18 @@ function checkIfEmpty(input) {
     return false;
 }
 
+function checkLengthLimit(input, maxLength) {
+    // kontrola, zda je input value příliš dlouhé
+    if (input.value.length > maxLength) {
+        setError(input, "Překročena maximální délka!");
+        return true;
+    }
+    return false;
+}
+
 function checkEmailForErrors(emailInput) {
     if (checkIfEmpty(emailInput)) return true;
+    if (checkLengthLimit(emailInput, 100)) return true;
 
     // validuje e-mail: kontroluje, zda obsahuje část před '@', samotné '@',
     // část domény a koncovku (např. .cz, .com). Nepovoluje mezery ani více '@'.
@@ -49,5 +59,6 @@ function checkEmailForErrors(emailInput) {
 
 function checkPasswordForErrors(passwordInput) {
     if (checkIfEmpty(passwordInput)) return true;
+    if (checkLengthLimit(passwordInput, 100)) return true;
     return false;
 }

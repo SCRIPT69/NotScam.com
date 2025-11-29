@@ -48,7 +48,7 @@ require_once 'includes/form_helpers.php';
             <form action="includes/login/login_process.php" method="POST" id="loginform" class="auth__form">
                 <div class="auth__inputcontainer">
                     <label for="email" class="auth__label">E-mail</label>
-                    <input type="email" id="email" name="email" class="auth__input" value="<?= getFormData('login', 'email');?>" required>
+                    <input type="email" maxlength="100" id="email" name="email" class="auth__input" value="<?= getFormData('login', 'email');?>" required>
                     <?php
                         generateErrorBlock('login', 'email');
                     ?>
@@ -56,12 +56,12 @@ require_once 'includes/form_helpers.php';
                 <div class="auth__inputcontainer">
                     <label for="password" class="auth__label">Heslo</label>
                     <div class="auth__password-wrapper">
-                        <input type="password" id="password" name="password" class="auth__input" required>
+                        <input type="password" maxlength="100" id="password" name="password" class="auth__input" required>
                         <button type="button" id="showPwdButton" class="auth__password-showPwdButton">👁️</button>
+                        <?php
+                            generateErrorBlock('login', 'password');
+                        ?>
                     </div>
-                    <?php
-                        generateErrorBlock('login', 'password');
-                    ?>
                 </div>
                 <button class="auth__button">Přihlásit se</button>
             </form>

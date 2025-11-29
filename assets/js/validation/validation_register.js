@@ -57,8 +57,18 @@ function checkIfEmpty(input) {
     return false;
 }
 
+function checkLengthLimit(input, maxLength) {
+    // kontrola, zda je input value příliš dlouhé
+    if (input.value.length > maxLength) {
+        setError(input, "Překročena maximální délka!");
+        return true;
+    }
+    return false;
+}
+
 function checkNameForErrors(nameInput) {
     if (checkIfEmpty(nameInput)) return true;
+    if (checkLengthLimit(nameInput, 40)) return true;
 
     // validuje jméno: povoluje pouze písmena (včetně české diakritiky)
     // a maximálně jednu mezeru mezi částmi jména. Žádné mezery na začátku nebo konci,
@@ -72,6 +82,7 @@ function checkNameForErrors(nameInput) {
 
 function checkEmailForErrors(emailInput) {
     if (checkIfEmpty(emailInput)) return true;
+    if (checkLengthLimit(emailInput, 100)) return true;
 
     // validuje e-mail: kontroluje, zda obsahuje část před '@', samotné '@',
     // část domény a koncovku (např. .cz, .com). Nepovoluje mezery ani více '@'.
@@ -84,7 +95,8 @@ function checkEmailForErrors(emailInput) {
 
 function checkPasswordForErrors(passwordInput) {
     if (checkIfEmpty(passwordInput)) return true;
-    
+    if (checkLengthLimit(passwordInput, 100)) return true;
+
     // validuje heslo: musí mít min. 9 znaků,
     // obsahovat malé písmeno, velké písmeno,
     // číslici a speciální znak.
@@ -102,6 +114,7 @@ function checkPasswordForErrors(passwordInput) {
 
 function checkPasswordConfirmNotEqualsError(passwordInput, passwordConfirmInput) {
     if (checkIfEmpty(passwordConfirmInput)) return true;
+    if (checkLengthLimit(passwordConfirmInput, 100)) return true;
     
     // zkontrolujme, jestli se hesla shodují.
     if (passwordInput.value != passwordConfirmInput.value) {
@@ -113,6 +126,7 @@ function checkPasswordConfirmNotEqualsError(passwordInput, passwordConfirmInput)
 
 function checkCardNumberForErrors(cardNumberInput) {
     if (checkIfEmpty(cardNumberInput)) return true;
+    if (checkLengthLimit(cardNumberInput, 19)) return true;
     
     // validuje card number: musí mít 16 znaků,
     // musí obsahovat pouze čísla
@@ -126,6 +140,7 @@ function checkCardNumberForErrors(cardNumberInput) {
 
 function checkCardExpirationDateForErrors(cardExpirationInput) {
     if (checkIfEmpty(cardExpirationInput)) return true;
+    if (checkLengthLimit(cardExpirationInput, 5)) return true;
     
     let dateStr = cardExpirationInput.value;
 

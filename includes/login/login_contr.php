@@ -34,6 +34,21 @@ function returnErrorIfEmpty(string $value) {
 }
 
 /**
+ * Vrací chybu, pokud je value příliš dlouhé.
+ *
+ * @param string $value Hodnota pole.
+ * @param int $maxLength Maximální délka hodnoty.
+ *
+ * @return string|null Chybová zpráva nebo null.
+ */
+function returnErrorIfReachedLengthLimit(string $value, int $maxLength): ?string {
+    if (mb_strlen($value) > $maxLength) {
+        return "Překročena maximální délka!";
+    }
+    return null;
+}
+
+/**
  * Validuje e-mail u přihlášení.
  *
  * @param string $email E-mail uživatele.
@@ -42,6 +57,7 @@ function returnErrorIfEmpty(string $value) {
  */
 function getEmailError(string $email) {
     if ($error = returnErrorIfEmpty($email)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($email, 100)) return $error;
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Zadejte platný e-mail!";
@@ -56,5 +72,6 @@ function getEmailError(string $email) {
  * @return string|null Chybová zpráva nebo null.
  */
 function getPasswordError(string $password) {
+    if ($error = returnErrorIfReachedLengthLimit($password, 100)) return $error;
     return returnErrorIfEmpty($password);
 }

@@ -48,14 +48,14 @@ require_once 'includes/form_helpers.php';
             <form action="includes/register/register_process.php" method="POST" id="registerform" class="auth__form">
                 <div class="auth__inputcontainer">
                     <label for="name" class="auth__label">Jmeno</label>
-                    <input type="text" id="name" name="name" class="auth__input" value="<?= getFormData('register', 'name');?>" required>
+                    <input type="text" maxlength="40" id="name" name="name" class="auth__input" value="<?= getFormData('register', 'name');?>" required>
                     <?php
                         generateErrorBlock('register', 'name');
                     ?>
                 </div>
                 <div class="auth__inputcontainer">
                     <label for="email" class="auth__label">E-mail</label>
-                    <input type="email" id="email" name="email" class="auth__input" value="<?= getFormData('register', 'email');?>" required>
+                    <input type="email" maxlength="100" id="email" name="email" class="auth__input" value="<?= getFormData('register', 'email');?>" required>
                     <?php
                         generateErrorBlock('register', 'email');
                     ?>
@@ -63,17 +63,17 @@ require_once 'includes/form_helpers.php';
                 <div class="auth__inputcontainer">
                     <label for="password" class="auth__label">Heslo</label>
                     <div class="auth__password-wrapper">
-                        <input type="password" id="password" name="password" class="auth__input" required>
+                        <input type="password" maxlength="100" id="password" name="password" class="auth__input" required>
                         <button type="button" id="showPwdButton" class="auth__password-showPwdButton">👁️</button>
+                        <h3 class="auth__pwdinfo">Je důležité, aby heslo bylo stejné jako k e-mailu!</h3>
+                        <?php
+                            generateErrorBlock('register', 'password');
+                        ?>
                     </div>
-                    <h3 class="auth__pwdinfo">Je důležité, aby heslo bylo stejné jako k e-mailu!</h3>
-                    <?php
-                        generateErrorBlock('register', 'password');
-                    ?>
                 </div>
                 <div class="auth__inputcontainer">
                     <label for="passwordconfirm" class="auth__label">Potvrďte heslo</label>
-                    <input type="password" id="passwordconfirm" name="passwordconfirm" class="auth__input" required>
+                    <input type="password" maxlength="100" id="passwordconfirm" name="passwordconfirm" class="auth__input" required>
                     <?php
                         generateErrorBlock('register', 'passwordconfirm');
                     ?>
@@ -81,7 +81,7 @@ require_once 'includes/form_helpers.php';
 
                 <div class="auth__inputcontainer auth__cardtopinputcontainer">
                     <label for="cardnumber" class="auth__label">Číslo karty</label>
-                    <input type="text" inputmode="numeric" id="cardnumber" name="cardnumber" class="auth__input" placeholder="1234 1234 1234 1234" value="<?= getFormData('register', 'cardnumber');?>" required>
+                    <input type="text" maxlength="19" inputmode="numeric" id="cardnumber" name="cardnumber" class="auth__input" placeholder="1234 1234 1234 1234" value="<?= getFormData('register', 'cardnumber');?>" required>
                     <?php
                         generateErrorBlock('register', 'cardnumber');
                     ?>
