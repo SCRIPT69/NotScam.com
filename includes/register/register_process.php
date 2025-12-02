@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Zpracuje odeslaný registrační formulář.
  *
@@ -24,11 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ];
 
     try {
-        //require_once '../includes/dbh.inc.php';
-        require_once '../session_manager.php';
+        require_once __DIR__ . '/../dbh.php';
+        require_once __DIR__ . '/../session_manager.php';
+        require_once 'register_model.php';
         require_once 'register_contr.php';
 
-        $errors = validateRegister($register_data);
+        $errors = validateRegister($register_data, $pdo);
 
         if ($errors) {
             $_SESSION["register-errors"] = $errors;
@@ -40,6 +42,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../../register.php");
             die();
         }
+        unset($_SESSION["register-errors"], $_SESSION["register-data"]);
+
+        saveNewUserToDB($pdo, $name, $email, $password);
+
+        $userId = (int)$pdo->lastInsertId();
+        regenerateSessionId();
+        $_SESSION["user_id"] = $userId;
+        $_SESSION["user_role"] = "user";
+
+        header("Location: ../../index.php");
+        $pdo = null;
+        die();
     }
     catch (PDOException $e) {
         die("Query failed: ".$e->getMessage());

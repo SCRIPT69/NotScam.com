@@ -1,19 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Provede kompletní validaci registračních dat.
  *
  * @param array $data Asociativní pole obsahující vstupní hodnoty formuláře.
+ * @param PDO $pdo PDO instance připojená k databázi.
  *
  * @return array Pole chyb, kde klíč je název pole a hodnota je text chyby.
  */
-function validateRegister(array $data): array {
+function validateRegister(array $data, PDO $pdo): array {
     $errors = [];
 
     if ($error = getNameError($data["name"])) {
         $errors["name"] = $error;
     }
-    if ($error = getEmailError($data["email"])) {
+    if ($error = getEmailError($data["email"], $pdo)) {
         $errors["email"] = $error;
     }
     if ($error = getPasswordError($data["password"])) {
@@ -88,15 +91,19 @@ function getNameError(string $name): ?string {
  * Validuje e-mail.
  *
  * @param string $email E-mailová adresa.
+ * @param PDO $pdo PDO instance připojená k databázi.
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getEmailError(string $email): ?string {
+function getEmailError(string $email, PDO $pdo): ?string {
     if ($error = returnErrorIfEmpty($email)) return $error;
     if ($error = returnErrorIfReachedLengthLimit($email, 100)) return $error;
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Zadejte platný e-mail!";
+    }
+    if (getEmailIfExists($email, $pdo)) {
+        return "E-mail se již používá!";
     }
     return null;
 }

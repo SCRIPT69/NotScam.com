@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Validuje vstupní data přihlašovacího formuláře.
  *
@@ -27,10 +29,11 @@ function validateLogin(array $data): array {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function returnErrorIfEmpty(string $value) {
-    if ($value == "") {
+function returnErrorIfEmpty(string $value): ?string {
+    if (trim($value) == "") {
         return "Vyplňte pole!";
     }
+    return null;
 }
 
 /**
@@ -55,13 +58,14 @@ function returnErrorIfReachedLengthLimit(string $value, int $maxLength): ?string
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getEmailError(string $email) {
+function getEmailError(string $email): ?string {
     if ($error = returnErrorIfEmpty($email)) return $error;
     if ($error = returnErrorIfReachedLengthLimit($email, 100)) return $error;
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Zadejte platný e-mail!";
     }
+    return null;
 }
 
 /**
@@ -71,7 +75,7 @@ function getEmailError(string $email) {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getPasswordError(string $password) {
+function getPasswordError(string $password): ?string {
     if ($error = returnErrorIfReachedLengthLimit($password, 100)) return $error;
     return returnErrorIfEmpty($password);
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Zpracuje odeslaný přihlašovací formulář.
  *
@@ -14,8 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login_data = ["email"=>$email, "password"=>$password];
 
     try {
-        //require_once '../includes/dbh.inc.php';
-        require_once '../session_manager.php';
+        require_once __DIR__ . '/../dbh.php';
+        require_once __DIR__ . '/../session_manager.php';
+        require_once 'login_model.php';
         require_once 'login_contr.php';
 
         $errors = validateLogin($login_data);
@@ -29,6 +31,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../../login.php");
             die();
         }
+        unset($_SESSION["login-errors"], $_SESSION["login-data"]);
+
+        $user = authenticateUser($pdo, $email, $password);
+        if (!$user) {
+            $_SESSION["login-errors"] = ["password" => "Zadaný e-mail nebo heslo není správné!"];
+            unset($login_data["password"]);
+            $_SESSION["login-data"] = $login_data;
+            header("Location: ../../login.php");
+            die();
+        }
+        regenerateSessionId();
+        $_SESSION["user_id"] = $user["id"];
+        $_SESSION["user_role"] = $user["role"];
+
+        header("Location: ../../index.php");
+        $pdo = null;
+        die();
     }
     catch (PDOException $e) {
         die("Query failed: ".$e->getMessage());

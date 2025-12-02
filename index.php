@@ -1,3 +1,6 @@
+<?php
+require_once 'includes/session_manager.php';
+?>
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -20,8 +23,15 @@
             <nav>
                 <ul class="header__ul">
                     <li><a class="header__ul__link_chosen" href="index.php">Hlavní stránka</a></li>
-                    <li><a class="header__ul__link" href="login.php">Přihlášení</a></li>
-                    <li><a class="header__ul__link" href="register.php">Registrace</a></li>
+                    <?php
+                        if (!isset($_SESSION["user_id"])) {
+                            echo '<li><a class="header__ul__link" href="login.php">Přihlášení</a></li>';
+                            echo '<li><a class="header__ul__link" href="register.php">Registrace</a></li>';
+                        }
+                        else {
+                            echo '<li><a class="header__ul__link" href="logout.php">Odhlásit se</a></li>';
+                        }
+                    ?>
                 </ul>
             </nav>
             <div id="burger" class="burger"><span></span></div>
@@ -30,8 +40,15 @@
                     <ul class="burger__ul">
                         <li><button id="burger-exitButton" class="burger__exitButton">×</button></li>
                         <li><a class="burger__ul__link_chosen" href="index.php">Hlavní stránka</a></li>
-                        <li><a class="burger__ul__link" href="login.php">Přihlášení</a></li>
-                        <li><a class="burger__ul__link" href="register.php">Registrace</a></li>
+                        <?php
+                            if (!isset($_SESSION["user_id"])) {
+                                echo '<li><a class="burger__ul__link" href="login.php">Přihlášení</a></li>';
+                                echo '<li><a class="burger__ul__link" href="register.php">Registrace</a></li>';
+                            }
+                            else {
+                                echo '<li><a class="header__ul__link" href="logout.php">Odhlásit se</a></li>';
+                            }
+                        ?>
                     </ul>
                 </nav>
             </div>
