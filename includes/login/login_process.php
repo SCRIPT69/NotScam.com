@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["login-data"] = $login_data;
 
             header("Location: ../../login.php");
-            die();
+            exit;
         }
         unset($_SESSION["login-errors"], $_SESSION["login-data"]);
 
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             unset($login_data["password"]);
             $_SESSION["login-data"] = $login_data;
             header("Location: ../../login.php");
-            die();
+            exit;
         }
         regenerateSessionId();
         $_SESSION["user_id"] = $user["id"];
@@ -47,13 +47,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         header("Location: ../../index.php");
         $pdo = null;
-        die();
+        exit;
     }
     catch (PDOException $e) {
-        die("Query failed: ".$e->getMessage());
+        exit("Query failed: ".$e->getMessage());
     }
 }
 else {
     header("Location: ../../index.php");
-    die();
+    exit;
 }

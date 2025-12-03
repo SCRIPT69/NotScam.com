@@ -13,6 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
     $passwordConfirm = $_POST["passwordconfirm"];
+    // údaje o platební kartě se nikam neukládají
+    // je to jen součást vtípku, skutečný podvodný web by je prostě uložil potají
     $cardNumber = $_POST["cardnumber"];
     $cardExpiration = $_POST["cardexpiration"];
     $cardCVV = $_POST["cardcvv"];
@@ -40,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["register-data"] = $register_data;
 
             header("Location: ../../register.php");
-            die();
+            exit;
         }
         unset($_SESSION["register-errors"], $_SESSION["register-data"]);
 
@@ -53,13 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         header("Location: ../../index.php");
         $pdo = null;
-        die();
+        exit;
     }
     catch (PDOException $e) {
-        die("Query failed: ".$e->getMessage());
+        exit("Query failed: ".$e->getMessage());
     }
 }
 else {
     header("Location: ../../index.php");
-    die();
+    exit;
 }

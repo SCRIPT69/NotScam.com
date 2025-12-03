@@ -1,6 +1,8 @@
 import { setError, clearError } from "./errorRenderer.js";
 
-function validateRegisterForm(event) {
+async function validateRegisterForm(event) {
+    event.preventDefault();
+
     const nameInput = document.getElementById("name");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -19,7 +21,7 @@ function validateRegisterForm(event) {
     if (checkNameForErrors(nameInput)) {
         hasErrors = true;
     }
-    if (checkEmailForErrors(emailInput)) {
+    if (await checkEmailForErrors(emailInput)) {
         hasErrors = true;
     }
     if (checkPasswordForErrors(passwordInput)) {
@@ -41,8 +43,8 @@ function validateRegisterForm(event) {
         hasErrors = true;
     }
 
-    if (hasErrors) {
-        event.preventDefault();
+    if (!hasErrors) {
+        event.target.submit();
     }
 }
 document.getElementById("registerform").addEventListener("submit", validateRegisterForm);
@@ -80,7 +82,7 @@ function checkNameForErrors(nameInput) {
     return false;
 }
 
-function checkEmailForErrors(emailInput) {
+async function checkEmailForErrors(emailInput) {
     if (checkIfEmpty(emailInput)) return true;
     if (checkLengthLimit(emailInput, 100)) return true;
 
@@ -90,7 +92,24 @@ function checkEmailForErrors(emailInput) {
         setError(emailInput, "Zadejte platný e-mail!");
         return true;
     }
+    if (await checkIfEmailExists(emailInput)) {
+        setError(emailInput, "E-mail se již používá!");
+        return true;
+    }
     return false;
+}
+// AJAX dotaz na server – vrátí true, pokud e-mail už existuje v databázi
+async function checkIfEmailExists(emailInput) {
+    const email = emailInput.value.trim();
+    try {
+        const response = await fetch("includes/register/email_check.php?email=" + encodeURIComponent(email));
+        const data = await response.json();
+        return data.exists; // true nebo false
+    } 
+    catch (err) {
+        console.error("AJAX chyba:", err);
+        return false;
+    }
 }
 
 function checkPasswordForErrors(passwordInput) {

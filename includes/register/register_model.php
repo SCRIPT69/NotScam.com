@@ -3,21 +3,20 @@
 declare(strict_types=1);
 
 /**
- * Vrací e-mail, pokud existuje v databázi.
+ * Vrací true, pokud e-mail existuje v databázi nebo false, pokud ne.
  *
  * @param string $email Hledaný e-mail.
  * @param PDO $pdo PDO instance.
  *
- * @return array{email: string}|false Asociativní pole s e-mailem nebo false, pokud neexistuje.
+ * @return bool
  */
-function getEmailIfExists(string $email, PDO $pdo): array|false {
+function checkIfEmailExists(string $email, PDO $pdo): bool {
     $query = "SELECT email FROM users WHERE email = :email;";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":email", $email);
     $stmt->execute();
 
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result;
+    return (bool)$stmt->fetchColumn();
 }
 
 /**

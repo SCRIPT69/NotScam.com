@@ -102,7 +102,7 @@ function getEmailError(string $email, PDO $pdo): ?string {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Zadejte platný e-mail!";
     }
-    if (getEmailIfExists($email, $pdo)) {
+    if (checkIfEmailExists($email, $pdo)) {
         return "E-mail se již používá!";
     }
     return null;
