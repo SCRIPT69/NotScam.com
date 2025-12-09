@@ -10,13 +10,13 @@ declare(strict_types=1);
  * - Při úspěchu vrací ID a roli uživatele.
  * - Při neúspěchu vrací false.
  *
- * @param PDO $pdo PDO instance připojená k databázi.
  * @param string $email E-mail z přihlašovacího formuláře.
  * @param string $password Heslo z přihlašovacího formuláře.
+ * @param PDO $pdo PDO instance připojená k databázi.
  *
  * @return array{id:int, role:string}|false Asociativní pole s údaji uživatele nebo false při neplatných údajích.
  */
-function authenticateUser(PDO $pdo, string $email, string $password): array|false {
+function authenticateUser(string $email, string $password, PDO $pdo): array|false {
     // najdeme uživatele podle e-mailu
     $query = "SELECT id, pwd_hash, role FROM users WHERE email = :email;";
     $stmt = $pdo->prepare($query);

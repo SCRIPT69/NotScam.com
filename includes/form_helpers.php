@@ -34,3 +34,18 @@ function getFormData(string $formName, string $key) {
         return "";
     }
 }
+
+/**
+ * Vymaže validační chyby a dříve vyplněná data formuláře ze session.
+ *
+ * Používá se po zobrazení formuláře, aby se odstranily staré hodnoty
+ * a chyby z předchozího odeslání.
+ *
+ * @param string $formName Název formuláře (např. 'register', 'profile').
+ *
+ * @return void
+ */
+function clearValidationSessions(string $formName) {
+    unset($_SESSION["$formName-errors"]);
+    unset($_SESSION["$formName-data"]);
+}

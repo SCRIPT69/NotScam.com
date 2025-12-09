@@ -1,15 +1,16 @@
-const passwordInput = document.getElementById("password");
-const passwordConfirmInput = document.getElementById("passwordconfirm");
+const passwordInputs = document.querySelectorAll('input[type="password"]');
 const btn = document.getElementById("showPwdButton");
 
 function showPasswords() {
-    if (passwordInput) passwordInput.type = "text";
-    if (passwordConfirmInput) passwordConfirmInput.type = "text";
+    for (const input of passwordInputs) {
+        input.type = "text";
+    }
 }
 
 function hidePasswords() {
-    if (passwordInput) passwordInput.type = "password";
-    if (passwordConfirmInput) passwordConfirmInput.type = "password";
+    for (const input of passwordInputs) {
+        input.type = "password";
+    }
 }
 
 btn.addEventListener("mousedown", showPasswords);

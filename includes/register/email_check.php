@@ -22,7 +22,7 @@ if (!isset($_GET["email"])) {
 $email = trim($_GET["email"]);
 
 require_once __DIR__ . '/../dbh.php';
-require_once 'register_model.php';
+require_once __DIR__ . '/../validation/validators.php';
 
-echo json_encode(["exists" => checkIfEmailExists($email, $pdo)]);
+echo json_encode(["exists" => checkIfEmailAlreadyUsed($email, $pdo)]);
 exit;

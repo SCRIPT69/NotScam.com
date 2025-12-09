@@ -1,6 +1,10 @@
 <?php
 require_once 'includes/session_manager.php';
 require_once 'includes/form_helpers.php';
+if (isset($_SESSION["user_id"])) {
+    header("Location: index.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -47,14 +51,14 @@ require_once 'includes/form_helpers.php';
             <h2 class="auth__title">Přihlášení</h2>
             <form action="includes/login/login_process.php" method="POST" id="loginform" class="auth__form">
                 <div class="auth__inputcontainer">
-                    <label for="email" class="auth__label">E-mail</label>
+                    <label for="email" class="auth__label">E-mail *</label>
                     <input type="email" maxlength="100" id="email" name="email" class="auth__input" value="<?= getFormData('login', 'email');?>" required>
                     <?php
                         generateErrorBlock('login', 'email');
                     ?>
                 </div>
                 <div class="auth__inputcontainer">
-                    <label for="password" class="auth__label">Heslo</label>
+                    <label for="password" class="auth__label">Heslo *</label>
                     <div class="auth__password-wrapper">
                         <input type="password" maxlength="100" id="password" name="password" class="auth__input" required>
                         <button type="button" id="showPwdButton" class="auth__password-showPwdButton">👁️</button>
@@ -78,6 +82,5 @@ require_once 'includes/form_helpers.php';
 </html>
 
 <?php
-    unset($_SESSION['login-errors']);
-    unset($_SESSION['login-data']);
+    clearValidationSessions("login");
 ?>

@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 /**
- * Zpracuje odeslaný registrační formulář.
+ * Entry point pro zpracování registračního POST formuláře.
  *
  * - Načte vstupní data.
- * - Zavolá validační funkce.
- * - Při chybách uloží data i chyby do session.
- * - Při úspěchu pokračuje v dalším zpracování (DB, registrace uživatele, atd.)
+ * - Zavolá kontroler registrace.
+ * - Podle výsledku provede přesměrování.
  */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"];
@@ -32,30 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         require_once 'register_model.php';
         require_once 'register_contr.php';
 
-        $errors = validateRegister($register_data, $pdo);
-
-        if ($errors) {
-            $_SESSION["register-errors"] = $errors;
-
-            unset($register_data["password"]);
-            unset($register_data["passwordconfirm"]);
-            $_SESSION["register-data"] = $register_data;
-
+        if (registerUser($register_data, $pdo)) {
+            header("Location: ../../index.php");
+            exit;
+        }
+        else {
             header("Location: ../../register.php");
             exit;
         }
-        unset($_SESSION["register-errors"], $_SESSION["register-data"]);
-
-        saveNewUserToDB($pdo, $name, $email, $password);
-
-        $userId = (int)$pdo->lastInsertId();
-        regenerateSessionId();
-        $_SESSION["user_id"] = $userId;
-        $_SESSION["user_role"] = "user";
-
-        header("Location: ../../index.php");
-        $pdo = null;
-        exit;
     }
     catch (PDOException $e) {
         exit("Query failed: ".$e->getMessage());

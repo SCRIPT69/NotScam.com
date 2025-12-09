@@ -2,6 +2,52 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/../validation/validators.php';
+
+/**
+ * Hlavní funkce pro zpracování přihlášení uživatele.
+ *
+ * - Validační kontrola vstupních dat.
+ * - Pokus o autentizaci uživatele podle e-mailu a hesla.
+ * - Při neúspěchu uloží chyby a vrátí false.
+ * - Při úspěchu inicializuje session a vrací true.
+ *
+ * @param array $data Vstupní hodnoty z login formuláře.
+ * @param PDO $pdo PDO instance databáze.
+ * @return bool True při úspěšném přihlášení, jinak false.
+ */
+function loginUser(array $data, PDO $pdo): bool {
+    $errors = validateLogin($data);
+        
+    // Pokud jsou validační chyby - uložit do session a ukončit
+    if (!empty($errors)) {
+        $_SESSION["login-errors"] = $errors;
+
+        unset($data["password"]);
+        $_SESSION["login-data"] = $data;
+
+        return false;
+    }
+    unset($_SESSION["login-errors"], $_SESSION["login-data"]);
+
+    // Pokus o autentizaci (ověření, že e-mail existuje a heslo sedí)
+    $user = authenticateUser($data["email"], $data["password"], $pdo);
+    if (!$user) {
+        // Neúspěšné přihlášení – chyba kombinace e-mailu a hesla
+        $_SESSION["login-errors"] = ["password" => "Zadaný e-mail nebo heslo není správné!"];
+        unset($data["password"]);
+        $_SESSION["login-data"] = $data;
+        return false;
+    }
+
+    // Úspěšné ověření - Přihlášení uživatele
+    regenerateSessionId();
+    $_SESSION["user_id"] = $user["id"];
+    $_SESSION["user_role"] = $user["role"];
+
+    return true;
+}
+
 /**
  * Validuje vstupní data přihlašovacího formuláře.
  *
@@ -12,60 +58,14 @@ declare(strict_types=1);
 function validateLogin(array $data): array {
     $errors = [];
 
-    if ($error = getEmailError($data["email"])) {
+    if ($error = checkEmailFormatForErrors($data["email"])) {
         $errors["email"] = $error;
     }
-    if ($error = getPasswordError($data["password"])) {
+    if ($error = checkPasswordLoginForErrors($data["password"])) {
         $errors["password"] = $error;
     }
 
     return $errors;
-}
-
-/**
- * Vrací chybu, pokud je hodnota prázdná.
- *
- * @param string $value Hodnota pole.
- *
- * @return string|null Chybová zpráva nebo null.
- */
-function returnErrorIfEmpty(string $value): ?string {
-    if (trim($value) == "") {
-        return "Vyplňte pole!";
-    }
-    return null;
-}
-
-/**
- * Vrací chybu, pokud je value příliš dlouhé.
- *
- * @param string $value Hodnota pole.
- * @param int $maxLength Maximální délka hodnoty.
- *
- * @return string|null Chybová zpráva nebo null.
- */
-function returnErrorIfReachedLengthLimit(string $value, int $maxLength): ?string {
-    if (mb_strlen($value) > $maxLength) {
-        return "Překročena maximální délka!";
-    }
-    return null;
-}
-
-/**
- * Validuje e-mail u přihlášení.
- *
- * @param string $email E-mail uživatele.
- *
- * @return string|null Chybová zpráva nebo null.
- */
-function getEmailError(string $email): ?string {
-    if ($error = returnErrorIfEmpty($email)) return $error;
-    if ($error = returnErrorIfReachedLengthLimit($email, 100)) return $error;
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return "Zadejte platný e-mail!";
-    }
-    return null;
 }
 
 /**
@@ -75,7 +75,7 @@ function getEmailError(string $email): ?string {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function getPasswordError(string $password): ?string {
+function checkPasswordLoginForErrors(string $password): ?string {
     if ($error = returnErrorIfReachedLengthLimit($password, 100)) return $error;
     return returnErrorIfEmpty($password);
 }
