@@ -55,7 +55,7 @@ $email = getUserField("email", $pdo);
     </header>
     <main>
         <section class="profile">
-            <form class="profile__container" action="includes/profile/profile_savingChangedData.php" method="POST">
+            <form class="profile__container" action="includes/profile/profile_savingChangedData.php" method="POST" id="profileform">
                 <?php
                     echo '<h3>Dobrý den, '.htmlspecialchars($name, ENT_QUOTES, "UTF-8").'!</h3>';
                 ?>
@@ -74,7 +74,7 @@ $email = getUserField("email", $pdo);
                     <div class="profile__containerForError">
                         <?php
                             $emailvalue = getFormData("profile", "email") !== "" ? getFormData("profile", "email") : htmlspecialchars($email, ENT_QUOTES, "UTF-8");
-                            echo '<input id="email" name="email" class="profile__input" value="'.$emailvalue.'">';
+                            echo '<input id="email" name="email" type="email" class="profile__input" value="'.$emailvalue.'">';
                             generateErrorBlock('profile', 'email');
                         ?>
                     </div>
@@ -125,6 +125,7 @@ $email = getUserField("email", $pdo);
     </footer>
 
     <script src="assets/js/UI/burger.js"></script>
+    <script type="module" src="assets/js/validation/validation_profile.js"></script>
     <script src="assets/js/UI/showPwdButton.js"></script>
     <?php
         if (!isset($_SESSION["profile-data"])) {
