@@ -1,8 +1,5 @@
 <?php
-require_once 'includes/session_manager.php';
-
-session_unset();
-session_destroy();
+require_once __DIR__ . '/includes/logout_logic.php';
 
 header("Location: index.php");
 exit;

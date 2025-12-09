@@ -32,7 +32,7 @@ async function validateRegisterForm(event) {
         setError(nameInput, errorMsg);
         hasErrors = true;
     }
-    let emailErrorMsg; // pro jistotu, protože budeme volat async function
+    let emailErrorMsg;
     if ((emailErrorMsg = await checkEmailRegisterForErrors(emailInput.value))) {
         setError(emailInput, emailErrorMsg);
         hasErrors = true;

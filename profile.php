@@ -108,6 +108,7 @@ $email = getUserField("email", $pdo);
                             ?>
                         </div>
                     </div>
+                    <button id="deleteAccountBtn" class="profile__deletebutton">Smazat účet</button>
                 </div>
                 <?php 
                     if (!isset($_SESSION["profile-data"])) {
@@ -126,6 +127,7 @@ $email = getUserField("email", $pdo);
 
     <script src="assets/js/UI/burger.js"></script>
     <script type="module" src="assets/js/validation/validation_profile.js"></script>
+    <script src="assets/js/UI/deleteAccountBtn.js"></script>
     <script src="assets/js/UI/showPwdButton.js"></script>
     <?php
         if (!isset($_SESSION["profile-data"])) {

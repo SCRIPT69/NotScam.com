@@ -48,6 +48,13 @@ function comparePwdWithPwdInDB(string $pwd, string $userId, PDO $pdo): bool {
     return false;
 }
 
+/**
+ * Aktualizuje jméno uživatele v databázi podle jeho ID.
+ *
+ * @param string $name Nové jméno uživatele.
+ * @param string $userId ID uživatele.
+ * @param PDO $pdo PDO instance připojená k databázi.
+ */
 function updateUserNameInDB(string $name, string $userId, PDO $pdo): void {
     $query = "UPDATE users SET name = :name WHERE id = :id;";
     $stmt = $pdo->prepare($query);
@@ -57,6 +64,13 @@ function updateUserNameInDB(string $name, string $userId, PDO $pdo): void {
     ]);
 }
 
+/**
+ * Aktualizuje e-mail uživatele v databázi podle jeho ID.
+ *
+ * @param string $email Nový e-mail.
+ * @param string $userId ID uživatele.
+ * @param PDO $pdo PDO instance připojená k databázi.
+ */
 function updateUserEmailInDB(string $email, string $userId, PDO $pdo): void {
     $query = "UPDATE users SET email = :email WHERE id = :id;";
     $stmt = $pdo->prepare($query);
@@ -66,6 +80,13 @@ function updateUserEmailInDB(string $email, string $userId, PDO $pdo): void {
     ]);
 }
 
+/**
+ * Aktualizuje heslo uživatele – nejprve ho zahashuje a poté uloží do DB.
+ *
+ * @param string $newPassword Nové heslo v čisté podobě.
+ * @param string $userId ID uživatele.
+ * @param PDO $pdo PDO instance připojená k databázi.
+ */
 function updateUserPasswordInDB(string $newPassword, string $userId, PDO $pdo): void {
     $pwdHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
 
@@ -75,4 +96,16 @@ function updateUserPasswordInDB(string $newPassword, string $userId, PDO $pdo): 
         ':pwd' => $pwdHash,
         ':id'  => $userId
     ]);
+}
+
+/**
+ * Smaže uživatele z databáze podle jeho ID.
+ *
+ * @param string $userId ID uživatele, který má být odstraněn.
+ * @param PDO $pdo PDO instance připojená k databázi.
+ */
+function deleteUserById(string $userId, PDO $pdo): void {
+    $stmt = $pdo->prepare("DELETE FROM users WHERE id = :id");
+    $stmt->bindParam(":id", $userId);
+    $stmt->execute();
 }

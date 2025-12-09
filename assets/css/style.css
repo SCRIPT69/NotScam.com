@@ -702,6 +702,21 @@ footer {
   background-color: rgb(50, 28, 99);
   color: rgb(250, 255, 148);
 }
+.profile__deletebutton {
+  margin: 2rem auto 0rem auto;
+  border-radius: 15px;
+  max-width: 11rem;
+  background-color: rgb(79, 45, 153);
+  color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.profile__deletebutton:hover {
+  background-color: rgb(192, 12, 27);
+  color: rgb(250, 255, 148);
+}
 .profile__containerForError {
   position: relative;
 }

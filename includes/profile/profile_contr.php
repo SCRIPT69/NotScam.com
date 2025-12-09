@@ -21,7 +21,7 @@ require_once __DIR__ . '/../validation/validators.php';
  *
  * @return void
  */
-function handleProfileUpdate(array $data, PDO $pdo): void {
+function updateProfileData(array $data, PDO $pdo): void {
     $changedData = checkWhichDataWasChangedForSaving($data, $pdo);
     // Pokud není nic změněno - jen vyčistit session a hotovo
     if (empty($changedData)) {

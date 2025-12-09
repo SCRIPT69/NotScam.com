@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         require_once 'profile_model.php';
         require_once 'profile_contr.php';
 
-        handleProfileUpdate($profile_data, $pdo);
+        updateProfileData($profile_data, $pdo);
 
         header("Location: ../../profile.php");
         exit;
