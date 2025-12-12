@@ -34,6 +34,19 @@ function returnErrorIfReachedLengthLimit(string $value, int $maxLength): ?string
 }
 
 /**
+ * Provede základní kontroly hodnoty (prázdné pole + délkový limit).
+ *
+ * @param string $value Hodnota ke kontrole.
+ * @param int $maxLength Maximální délka.
+ * @return string|null Chybová zpráva nebo null.
+ */
+function checkValueSizeErrors(string $value, int $maxLength): ?string {
+    if ($error = returnErrorIfEmpty($value)) return $error;
+    if ($error = returnErrorIfReachedLengthLimit($value, $maxLength)) return $error;
+    return null;
+}
+
+/**
  * Validuje jméno uživatele.
  *
  * @param string $name Jméno z formuláře.
@@ -41,8 +54,7 @@ function returnErrorIfReachedLengthLimit(string $value, int $maxLength): ?string
  * @return string|null Chybová zpráva nebo null.
  */
 function checkNameForErrors(string $name): ?string {
-    if ($error = returnErrorIfEmpty($name)) return $error;
-    if ($error = returnErrorIfReachedLengthLimit($name, 40)) return $error;
+    if ($error = checkValueSizeErrors($name, 40)) return $error;
 
     if (!preg_match('/^[A-Za-zÀ-ž]+(?: [A-Za-zÀ-ž]+)*$/u', $name) || mb_strlen(trim($name)) < 2) {
         return "Zadejte své pravé jméno!";
@@ -58,8 +70,7 @@ function checkNameForErrors(string $name): ?string {
  * @return string|null Chybová zpráva nebo null.
  */
 function checkEmailFormatForErrors(string $email): ?string {
-    if ($error = returnErrorIfEmpty($email)) return $error;
-    if ($error = returnErrorIfReachedLengthLimit($email, 100)) return $error;
+    if ($error = checkValueSizeErrors($email, 100)) return $error;
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Zadejte platný e-mail!";
@@ -90,8 +101,7 @@ function checkIfEmailAlreadyUsed(string $email, PDO $pdo): ?string {
  * @return string|null Chybová zpráva nebo null.
  */
 function checkPasswordForErrors(string $password): ?string {
-    if ($error = returnErrorIfEmpty($password)) return $error;
-    if ($error = returnErrorIfReachedLengthLimit($password, 100)) return $error;
+    if ($error = checkValueSizeErrors($password, 100)) return $error;
 
     if (mb_strlen($password) < 9) {
         return "Heslo musí mít alespoň 9 znaků!";
@@ -116,8 +126,7 @@ function checkPasswordForErrors(string $password): ?string {
  * @return string|null Chybová zpráva nebo null.
  */
 function checkPasswordConfirmForErrors(string $passwordConfirm, string $password): ?string {
-    if ($error = returnErrorIfEmpty($passwordConfirm)) return $error;
-    if ($error = returnErrorIfReachedLengthLimit($passwordConfirm, 100)) return $error;
+    if ($error = checkValueSizeErrors($passwordConfirm, 100)) return $error;
 
     if ($passwordConfirm != $password) {
         return "Hesla se neshodují!";
@@ -133,8 +142,7 @@ function checkPasswordConfirmForErrors(string $passwordConfirm, string $password
  * @return string|null Chybová zpráva nebo null.
  */
 function checkCardNumberForErrors(string $cardNumber): ?string {
-    if ($error = returnErrorIfEmpty($cardNumber)) return $error;
-    if ($error = returnErrorIfReachedLengthLimit($cardNumber, 19)) return $error;
+    if ($error = checkValueSizeErrors($cardNumber, 19)) return $error;
 
     // musí mít 16 znaků,
     // musí obsahovat pouze čísla
@@ -153,8 +161,7 @@ function checkCardNumberForErrors(string $cardNumber): ?string {
  * @return string|null Chybová zpráva nebo null.
  */
 function checkCardExpirationForErrors(string $cardExpiration): ?string {
-    if ($error = returnErrorIfEmpty($cardExpiration)) return $error;
-    if ($error = returnErrorIfReachedLengthLimit($cardExpiration, 5)) return $error;
+    if ($error = checkValueSizeErrors($cardExpiration, 5)) return $error;
 
     $regex = '/^(\d{1,2})\/(\d{2})$/'; // formát MM/YY
 
@@ -208,9 +215,54 @@ function checkCardCVVForErrors(string $cardCVV): ?string {
  *
  * @return string|null Chybová zpráva nebo null.
  */
-function checkCheckboxAgreeForErrors($checkboxAgree): ?string {
+function checkCheckboxAgreeForErrors(bool $checkboxAgree): ?string {
     if (!$checkboxAgree) {
         return "Musíte souhlasit s podmínkami!";
+    }
+    return null;
+}
+
+/**
+ * Validace ceny produktu – musí být číslo > 0.
+ *
+ * @param string $price Cena z formuláře.
+ * @return string|null Chyba nebo null.
+ */
+function checkPriceForErrors(string $price): ?string {
+    if ($error = checkValueSizeErrors($price, 20)) return $error;
+
+    if (!is_numeric($price) || (float)$price <= 0) {
+        return "Zadejte platnou cenu!";
+    }
+    if (!preg_match('/^\d+(\.\d{1,2})?$/', $price)) {
+        return "Cena může mít maximálně 2 desetinná místa!";
+    }
+    return null;
+}
+
+/**
+ * Validace obrázku produktu.
+ * Obrázek je volitelný. Pokud není nahrán - OK.
+ * Pokud je nahrán - kontrola typu a velikosti.
+ *
+ * @param array $image Data z pole $_FILES.
+ * @return string|null Chyba nebo null.
+ */
+function checkProductImageForErrors(array $image): ?string {
+    if ($image["error"] !== UPLOAD_ERR_OK) {
+        // Uživatel nenahrál žádný obrázek, OK
+        return null;
+    } else {
+        $allowed = ["jpg", "jpeg", "png"];
+        $ext = strtolower(pathinfo($image["name"], PATHINFO_EXTENSION));
+
+        if (!in_array($ext, $allowed)) {
+            return "Povoleny jsou pouze JPG a PNG!";
+        }
+
+        if ($image["size"] > 1_000_000) { // 1MB
+            return "Maximální velikost obrázku je 1 MB!";
+        }
     }
     return null;
 }

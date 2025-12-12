@@ -49,3 +49,15 @@ function clearValidationSessions(string $formName) {
     unset($_SESSION["$formName-errors"]);
     unset($_SESSION["$formName-data"]);
 }
+
+/**
+ * Vrátí CSS třídu pro zvýraznění inputu, pokud má formulář validační chybu.
+ *
+ * @param string $formName Název formuláře (např. "product", "register", "profile")
+ * @param string $field    Název pole formuláře
+ *
+ * @return string CSS třída nebo prázdný řetězec
+ */
+function inputErrorClass(string $formName, string $field): string {
+    return isset($_SESSION["$formName-errors"][$field]) ? 'auth__input-error' : '';
+}

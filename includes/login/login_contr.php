@@ -61,21 +61,9 @@ function validateLogin(array $data): array {
     if ($error = checkEmailFormatForErrors($data["email"])) {
         $errors["email"] = $error;
     }
-    if ($error = checkPasswordLoginForErrors($data["password"])) {
+    if ($error = checkValueSizeErrors($data["password"], 100)) {
         $errors["password"] = $error;
     }
 
     return $errors;
-}
-
-/**
- * Validuje heslo u přihlášení.
- *
- * @param string $password Heslo z formuláře.
- *
- * @return string|null Chybová zpráva nebo null.
- */
-function checkPasswordLoginForErrors(string $password): ?string {
-    if ($error = returnErrorIfReachedLengthLimit($password, 100)) return $error;
-    return returnErrorIfEmpty($password);
 }

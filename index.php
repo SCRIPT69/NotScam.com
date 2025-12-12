@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/session_manager.php';
+require_once __DIR__ . '/includes/session_manager.php';
 function showUlLinks(string $ulName) {
     echo '<li><a class="'.$ulName.'__ul__link_chosen" href="index.php">Hlavní stránka</a></li>';
     if (!isset($_SESSION["user_id"])) {
@@ -12,7 +12,7 @@ function showUlLinks(string $ulName) {
             echo '<li><a class="'.$ulName.'__ul__link" href="cart.php">🛒Košík</a></li>';
         }
         else if ($_SESSION["user_role"] == "admin") {
-            echo '<li><a class="'.$ulName.'__ul__link" href="admin_panel.php">Admin panel</a></li>';
+            echo '<li><a class="'.$ulName.'__ul__link" href="admin/admin_panel.php">Admin panel</a></li>';
         }
 
         echo '<li><a class="'.$ulName.'__ul__link" href="logout.php">Odhlásit se</a></li>';

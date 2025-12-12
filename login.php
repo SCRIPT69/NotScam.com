@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/session_manager.php';
-require_once 'includes/form_helpers.php';
+require_once __DIR__ .'/includes/session_manager.php';
+require_once __DIR__ .'/includes/form_helpers.php';
 if (isset($_SESSION["user_id"])) {
     header("Location: index.php");
     exit;
@@ -52,7 +52,7 @@ if (isset($_SESSION["user_id"])) {
             <form action="includes/login/login_process.php" method="POST" id="loginform" class="auth__form">
                 <div class="auth__inputcontainer">
                     <label for="email" class="auth__label">E-mail *</label>
-                    <input type="email" maxlength="100" id="email" name="email" class="auth__input" value="<?= getFormData('login', 'email');?>" required>
+                    <input type="email" maxlength="100" id="email" name="email" class="auth__input <?= inputErrorClass('login', 'email') ?>" value="<?= getFormData('login', 'email');?>" required>
                     <?php
                         generateErrorBlock('login', 'email');
                     ?>
@@ -60,7 +60,7 @@ if (isset($_SESSION["user_id"])) {
                 <div class="auth__inputcontainer">
                     <label for="password" class="auth__label">Heslo *</label>
                     <div class="auth__password-wrapper">
-                        <input type="password" maxlength="100" id="password" name="password" class="auth__input" required>
+                        <input type="password" maxlength="100" id="password" name="password" class="auth__input <?= inputErrorClass('login', 'password') ?>" required>
                         <button type="button" id="showPwdButton" class="auth__password-showPwdButton">👁️</button>
                         <?php
                             generateErrorBlock('login', 'password');

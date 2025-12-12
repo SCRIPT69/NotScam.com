@@ -52,14 +52,14 @@ if (isset($_SESSION["user_id"])) {
             <form action="includes/register/register_process.php" method="POST" id="registerform" class="auth__form">
                 <div class="auth__inputcontainer">
                     <label for="name" class="auth__label">Jmeno *</label>
-                    <input type="text" maxlength="40" id="name" name="name" class="auth__input" value="<?= getFormData('register', 'name');?>" required>
+                    <input type="text" maxlength="40" id="name" name="name" class="auth__input <?= inputErrorClass('register', 'name') ?>" value="<?= getFormData('register', 'name');?>" required>
                     <?php
                         generateErrorBlock('register', 'name');
                     ?>
                 </div>
                 <div class="auth__inputcontainer">
                     <label for="email" class="auth__label">E-mail *</label>
-                    <input type="email" maxlength="100" id="email" name="email" class="auth__input" value="<?= getFormData('register', 'email');?>" required>
+                    <input type="email" maxlength="100" id="email" name="email" class="auth__input <?= inputErrorClass('register', 'email') ?>" value="<?= getFormData('register', 'email');?>" required>
                     <?php
                         generateErrorBlock('register', 'email');
                     ?>
@@ -67,7 +67,7 @@ if (isset($_SESSION["user_id"])) {
                 <div class="auth__inputcontainer">
                     <label for="password" class="auth__label">Heslo *</label>
                     <div class="auth__password-wrapper">
-                        <input type="password" maxlength="100" id="password" name="password" class="auth__input" required>
+                        <input type="password" maxlength="100" id="password" name="password" class="auth__input <?= inputErrorClass('register', 'password') ?>" required>
                         <button type="button" id="showPwdButton" class="auth__password-showPwdButton">👁️</button>
                         <h3 class="auth__pwdinfo">Je důležité, aby heslo bylo stejné jako k e-mailu!</h3>
                         <?php
@@ -77,7 +77,7 @@ if (isset($_SESSION["user_id"])) {
                 </div>
                 <div class="auth__inputcontainer">
                     <label for="passwordconfirm" class="auth__label">Potvrďte heslo *</label>
-                    <input type="password" maxlength="100" id="passwordconfirm" name="passwordconfirm" class="auth__input" required>
+                    <input type="password" maxlength="100" id="passwordconfirm" name="passwordconfirm" class="auth__input <?= inputErrorClass('register', 'passwordconfirm') ?>" required>
                     <?php
                         generateErrorBlock('register', 'passwordconfirm');
                     ?>
@@ -85,7 +85,7 @@ if (isset($_SESSION["user_id"])) {
 
                 <div class="auth__inputcontainer auth__cardtopinputcontainer">
                     <label for="cardnumber" class="auth__label">Číslo karty *</label>
-                    <input type="text" maxlength="19" inputmode="numeric" id="cardnumber" name="cardnumber" class="auth__input" placeholder="1234 1234 1234 1234" value="<?= getFormData('register', 'cardnumber');?>" required>
+                    <input type="text" maxlength="19" inputmode="numeric" id="cardnumber" name="cardnumber" class="auth__input <?= inputErrorClass('register', 'cardnumber') ?>" placeholder="1234 1234 1234 1234" value="<?= getFormData('register', 'cardnumber');?>" required>
                     <?php
                         generateErrorBlock('register', 'cardnumber');
                     ?>
@@ -93,14 +93,14 @@ if (isset($_SESSION["user_id"])) {
                 <div class="auth__cardbottominputcontainer">
                     <div class="auth__inputcontainer">
                         <label for="cardexpiration" class="auth__label">Platnost *</label>
-                        <input type="text" maxlength="5" id="cardexpiration" name="cardexpiration" class="auth__input auth__cardbottominput" placeholder="MM/YY" value="<?= getFormData('register', 'cardexpiration');?>" required>
+                        <input type="text" maxlength="5" id="cardexpiration" name="cardexpiration" class="auth__input auth__cardbottominput <?= inputErrorClass('register', 'cardexpiration') ?>" placeholder="MM/YY" value="<?= getFormData('register', 'cardexpiration');?>" required>
                         <?php
                             generateErrorBlock('register', 'cardexpiration');
                         ?>
                     </div>
                     <div class="auth__inputcontainer">
                         <label for="cardcvv" class="auth__label">CVC/CVV *</label>
-                        <input type="text" maxlength="3" inputmode="numeric" id="cardcvv" name="cardcvv" class="auth__input auth__cardbottominput" placeholder="123" value="<?= getFormData('register', 'cardcvv');?>" required>
+                        <input type="text" maxlength="3" inputmode="numeric" id="cardcvv" name="cardcvv" class="auth__input auth__cardbottominput <?= inputErrorClass('register', 'cardcvv') ?>" placeholder="123" value="<?= getFormData('register', 'cardcvv');?>" required>
                         <?php
                             generateErrorBlock('register', 'cardcvv');
                         ?>

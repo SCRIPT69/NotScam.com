@@ -723,6 +723,9 @@ footer {
 .profile__containerForError .validation-error {
   margin-left: 0.6rem;
 }
+.profile .auth__input-error {
+  border: 1px solid red;
+}
 
 @media (max-width: 1350px) {
   .profile {
@@ -775,5 +778,151 @@ footer {
   .profile__input {
     margin-left: 0;
     margin-top: 0.3rem;
+  }
+}
+
+
+.admin_panel {
+  padding: 0 22rem;
+  color: rgb(49, 49, 49);
+}
+.admin_panel__container {
+  margin-top: 1.5rem;
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  background-color: rgb(255,255,255);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 4rem;
+}
+.admin_panel__container h3 {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.admin_panel__inputcontainer {
+  margin-top: 0.5rem;
+  display: flex;
+}
+.admin_panel__label {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.admin_panel__input {
+  border-radius: 8px;
+  font-size: 1.3rem;
+  padding: 0.1rem 0.3rem;
+  width: 19rem;
+  border: 1px solid rgb(170, 170, 170);
+  margin-left: 0.6rem;
+  margin-bottom: 0.1rem;
+}
+.admin_panel__input-price {
+  width: 10rem;
+}
+.admin_panel__input-file {
+  width: 25rem;
+}
+.admin_panel__textarea {
+  padding: 0.1rem;
+  margin-left: 0.6rem;
+  border-radius: 8px;
+  width: 22rem;
+  height: 8rem;
+  font-size: 1.3rem;
+  border: 1px solid rgb(170, 170, 170);
+}
+.admin_panel__button {
+  margin: 2rem auto 0rem auto;
+  border-radius: 15px;
+  max-width: 14rem;
+  background-color: rgb(79, 45, 153);
+  color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.admin_panel__button:hover {
+  background-color: rgb(50, 28, 99);
+  color: rgb(250, 255, 148);
+}
+.admin_panel__containerForError {
+  position: relative;
+}
+.admin_panel__containerForError .validation-error {
+  margin-left: 0.6rem;
+}
+.admin_panel__success {
+  font-size: 1.2rem;
+  color: rgb(2, 239, 61);
+  margin-left: 0.3rem;
+  max-width: 18rem;
+}
+.admin_panel .auth__input-error {
+  border: 1px solid red;
+}
+
+@media (max-width: 1300px) {
+  .admin_panel {
+    padding: 0 10rem;
+  }
+}
+@media (max-width: 1000px) {
+  .admin_panel {
+    padding: 0 5rem;
+  }
+}
+@media (max-width: 800px) {
+  .admin_panel {
+    padding: 0 2rem;
+  }
+  .admin_panel__inputcontainer {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .admin_panel__label {
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .admin_panel__input,
+  .admin_panel__textarea,
+  .admin_panel__input-file,
+  .admin_panel__input-price {
+    width: 100%;
+    margin-left: 0;
+  }
+  .admin_panel__containerForError .validation-error {
+    margin-left: 0;
+  }
+  .admin_panel__button {
+    width: 100%;
+    max-width: none;
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 500px) {
+  .admin_panel {
+    padding: 0 1rem;
+  }
+  .admin_panel__container {
+    padding: 1.2rem 1.2rem;
+  }
+  .admin_panel__container h3 {
+    font-size: 1.6rem;
+  }
+  .admin_panel__label {
+    font-size: 1.2rem;
+  }
+  .admin_panel__input,
+  .admin_panel__textarea {
+    font-size: 1.1rem;
+  }
+  .admin_panel__button {
+    font-size: 1.3rem;
+    padding: 0.6rem;
   }
 }

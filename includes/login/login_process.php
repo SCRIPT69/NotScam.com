@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * Entry point pro zpracování přihlašovacího formuláře.
  *
@@ -16,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         require_once __DIR__ . '/../dbh.php';
         require_once __DIR__ . '/../session_manager.php';
-        require_once 'login_model.php';
-        require_once 'login_contr.php';
+        require_once __DIR__ . '/login_model.php';
+        require_once __DIR__ . '/login_contr.php';
 
         if (loginUser($login_data, $pdo)) {
             header("Location: ../../index.php");

@@ -159,3 +159,29 @@ export function checkCheckboxAgreeError(isChecked) {
     }
     return false;
 }
+
+export function checkPriceForErrors(price) {
+    // odstranění mezer
+    let value = price.trim();
+
+    // základní kontroly (prázdné, dlouhé)
+    let error = runBasicValueChecks(value, 20);
+    if (error) return error;
+
+    // musí být číslo
+    if (isNaN(value)) {
+        return "Zadejte platnou cenu!";
+    }
+
+    // musí být > 0
+    if (Number(value) <= 0) {
+        return "Zadejte platnou cenu!";
+    }
+
+    // povolit max 2 desetinná místa
+    if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+        return "Cena může mít maximálně 2 desetinná místa!";
+    }
+
+    return false;
+}

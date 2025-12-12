@@ -64,7 +64,7 @@ $email = getUserField("email", $pdo);
                     <div class="profile__containerForError">
                         <?php
                             $namevalue = getFormData("profile", "name") !== "" ? getFormData("profile", "name") : htmlspecialchars($name, ENT_QUOTES, "UTF-8");
-                            echo '<input id="name" name="name" class="profile__input" value="'.$namevalue.'">';
+                            echo '<input id="name" name="name" class="profile__input '.inputErrorClass('profile', 'name').'" value="'.$namevalue.'">';
                             generateErrorBlock('profile', 'name');
                         ?>
                     </div>
@@ -74,7 +74,7 @@ $email = getUserField("email", $pdo);
                     <div class="profile__containerForError">
                         <?php
                             $emailvalue = getFormData("profile", "email") !== "" ? getFormData("profile", "email") : htmlspecialchars($email, ENT_QUOTES, "UTF-8");
-                            echo '<input id="email" name="email" type="email" class="profile__input" value="'.$emailvalue.'">';
+                            echo '<input id="email" name="email" type="email" class="profile__input '.inputErrorClass('profile', 'email').'" value="'.$emailvalue.'">';
                             generateErrorBlock('profile', 'email');
                         ?>
                     </div>
@@ -83,7 +83,7 @@ $email = getUserField("email", $pdo);
                     <div class="profile__inputcontainer">
                         <label for="currentpassword" class="profile__label-smaller">Heslo: </label>
                         <div class="profile__containerForError">
-                            <input type="password" id="currentpassword" name="currentpassword" class="profile__input profile__input-darkerborder">
+                            <input type="password" id="currentpassword" name="currentpassword" class="profile__input profile__input-darkerborder <?= inputErrorClass('profile', 'currentpassword') ?>">
                             <button type="button" id="showPwdButton" class="auth__password-showPwdButton">👁️</button>
                             <?php
                                 generateErrorBlock('profile', 'currentpassword');
@@ -93,7 +93,7 @@ $email = getUserField("email", $pdo);
                     <div class="profile__inputcontainer">
                         <label for="newpassword" class="profile__label-smaller">Nové heslo: </label>
                         <div class="profile__containerForError">
-                            <input type="password" id="newpassword" name="newpassword" class="profile__input profile__input-darkerborder">
+                            <input type="password" id="newpassword" name="newpassword" class="profile__input profile__input-darkerborder <?= inputErrorClass('profile', 'newpassword') ?>">
                             <?php
                                 generateErrorBlock('profile', 'newpassword');
                             ?>
@@ -102,7 +102,7 @@ $email = getUserField("email", $pdo);
                     <div class="profile__inputcontainer">
                         <label for="newpasswordconfirm" class="profile__label-smaller">Potvrďte heslo: </label>
                         <div class="profile__containerForError">
-                            <input type="password" id="newpasswordconfirm" name="newpasswordconfirm" class="profile__input profile__input-darkerborder">
+                            <input type="password" id="newpasswordconfirm" name="newpasswordconfirm" class="profile__input profile__input-darkerborder <?= inputErrorClass('profile', 'newpasswordconfirm') ?>">
                             <?php
                                 generateErrorBlock('profile', 'newpasswordconfirm');
                             ?>
