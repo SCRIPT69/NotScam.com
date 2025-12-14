@@ -4,6 +4,8 @@ vendor/
 # Ignore environment-specific configs
 includes/config.php
 
+uploads/
+
 # Ignore session files (if stored locally)
 session/
 

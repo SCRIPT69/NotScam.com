@@ -1,6 +1,48 @@
 <?php
 
 /**
+ * Načte produkty pro konkrétní stránku (pagination).
+ *
+ * Vrací omezený počet produktů z databáze podle limitu a offsetu,
+ * seřazené podle data vytvoření.
+ *
+ * @param PDO $pdo Databázové připojení.
+ * @param int $limit Počet produktů na stránku.
+ * @param int $offset Posun v databázi.
+ *
+ * @return array Seznam produktů.
+ */
+function getProductsPaginated(PDO $pdo, int $limit, int $offset): array
+{
+    $stmt = $pdo->prepare("
+        SELECT id, name, description, price, image_path, created_at
+        FROM products
+        ORDER BY created_at ASC
+        LIMIT :limit OFFSET :offset
+    ");
+
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Vrátí celkový počet produktů v databázi.
+ *
+ * Používá se pro výpočet stránkování.
+ *
+ * @param PDO $pdo Databázové připojení.
+ *
+ * @return int Počet produktů.
+ */
+function getProductsCount(PDO $pdo): int
+{
+    return (int)$pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
+}
+
+/**
  * Vloží nový produkt do databáze bez obrázku a vrátí jeho ID.
  *
  * @param PDO    $pdo         Aktivní PDO připojení k databázi.

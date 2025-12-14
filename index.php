@@ -1,5 +1,9 @@
 <?php
 require_once __DIR__ . '/includes/session_manager.php';
+require_once __DIR__ . '/includes/dbh.php';
+require_once __DIR__ . '/includes/products/product_model.php';
+require_once __DIR__ . '/includes/products/product_contr.php';
+require_once __DIR__ . '/includes/pages/home_contr.php';
 function showUlLinks(string $ulName) {
     echo '<li><a class="'.$ulName.'__ul__link_chosen" href="index.php">Hlavní stránka</a></li>';
     if (!isset($_SESSION["user_id"])) {
@@ -67,48 +71,49 @@ function showUlLinks(string $ulName) {
             <section>
                 <h3 class="products__title">Zboží</h3>
                 <div class="products">
-                    <article class="product-card">
-                        <div class="product-img"></div>
-                        <h3><a class="product-text" href="">Instrukce „Jak zbohatnout za 24 hodin”</a></h3>
-                        <div class="product-prevpriceblock">
-                            <h3 class="product-prevprice">4200 Kč</h3>
-                            <h3>-50%</h3>
-                        </div>
-                        <h3 class="product-price">2100 Kč</h3>
-                        <a href="" class="product-button">Zobrazit</a>
-                    </article>
-                    <article class="product-card">
-                        <div class="product-img"></div>
-                        <h3><a class="product-text" href="">Kámen “Přitáhni si štěstí”</a></h3>
-                        <div class="product-prevpriceblock">
-                            <h3 class="product-prevprice">3500 Kč</h3>
-                            <h3>-50%</h3>
-                        </div>
-                        <h3 class="product-price">1750 Kč</h3>
-                        <a href="" class="product-button">Zobrazit</a>
-                    </article>
-                    <article class="product-card">
-                        <div class="product-img"></div>
-                        <h3><a class="product-text" href="">Kniha „Jak přesvědčit vesmír, aby ti pomohl“</a></h3>
-                        <div class="product-prevpriceblock">
-                            <h3 class="product-prevprice">5998 Kč</h3>
-                            <h3>-50%</h3>
-                        </div>
-                        <h3 class="product-price">2999 Kč</h3>
-                        <a href="" class="product-button">Zobrazit</a>
-                    </article>
-                    <article class="product-card">
-                        <div class="product-img"></div>
-                        <h3><a class="product-text" href="">Kámen “Přitáhni si štěstí”</a></h3>
-                        <div class="product-prevpriceblock">
-                            <h3 class="product-prevprice">3500 Kč</h3>
-                            <h3>-50%</h3>
-                        </div>
-                        <h3 class="product-price">1750 Kč</h3>
-                        <a href="" class="product-button">Zobrazit</a>
-                    </article>
+                    
+                    <?php foreach ($products as $product): ?>
+                        <article class="product-card">
+
+                            <div class="product-img">
+                                <img
+                                    src="<?= $product['image_path']
+                                        ? 'uploads/products/' . htmlspecialchars($product['image_path'])
+                                        : 'assets/img/no-image.png' ?>"
+                                    alt="<?= htmlspecialchars($product['name']) ?>"
+                                >
+                            </div>
+
+                            <h3>
+                                <a class="product-text" href="product.php?id=<?= $product['id'] ?>">
+                                    <?= htmlspecialchars($product['name']) ?>
+                                </a>
+                            </h3>
+
+                            <?php
+                                $oldPrice = $product['price'] * 2;
+                            ?>
+
+                            <div class="product-prevpriceblock">
+                                <h3 class="product-prevprice">
+                                    <?= number_format($oldPrice, 0, ',', ' ') ?> Kč
+                                </h3>
+                                <h3>-50%</h3>
+                            </div>
+
+                            <h3 class="product-price">
+                                <?= number_format($product['price'], 0, ',', ' ') ?> Kč
+                            </h3>
+
+                            <a href="product.php?id=<?= $product['id'] ?>" class="product-button">
+                                Zobrazit
+                            </a>
+
+                        </article>
+                    <?php endforeach; ?>
                 </div>
             </section>
+            <?php require __DIR__ . '/includes/UI/pagination.php'; ?>
         </div>
     </main>
     <footer>
