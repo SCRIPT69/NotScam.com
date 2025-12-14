@@ -12,12 +12,16 @@
  *
  * @return array Seznam produktů.
  */
-function getProductsPaginated(PDO $pdo, int $limit, int $offset): array
+function getProductsPaginated(PDO $pdo, int $limit, int $offset, string $sort): array
 {
+    $order = $sort === 'old'
+        ? 'created_at ASC'
+        : 'created_at DESC';
+
     $stmt = $pdo->prepare("
-        SELECT id, name, description, price, image_path, created_at
+        SELECT *
         FROM products
-        ORDER BY created_at ASC
+        ORDER BY $order
         LIMIT :limit OFFSET :offset
     ");
 

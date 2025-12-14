@@ -14,6 +14,9 @@ $currentPage = isset($_GET['page']) && ctype_digit($_GET['page'])
     ? (int)$_GET['page']
     : 1;
 
+// řazení
+$sort = ($_GET['sort'] ?? 'old') === 'old' ? 'old' : 'new';
+
 $totalProducts = getProductsCount($pdo);
 $totalPages = (int)ceil($totalProducts / $perPage);
 
@@ -22,7 +25,7 @@ $currentPage = min($currentPage, $totalPages);
 $offset = ($currentPage - 1) * $perPage;
 
 
-$products = getProductsPaginated($pdo, $perPage, $offset);
+$products = getProductsPaginated($pdo, $perPage, $offset, $sort);
 
 $hasPrevPage = $currentPage > 1;
 $hasNextPage = $currentPage < $totalPages;

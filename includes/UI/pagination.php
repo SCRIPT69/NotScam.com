@@ -1,13 +1,11 @@
 <?php if ($totalPages > 1): ?>
 <nav class="pagination">
-
     <?php if ($hasPrevPage): ?>
-        <a class="pagination__arrow" href="?page=<?= $currentPage - 1 ?>">←</a>
+        <a href="?page=<?= $currentPage - 1 ?>&sort=<?= $sort ?>" class="pagination__arrow">←</a>
     <?php endif; ?>
 
     <?php if ($hasNextPage): ?>
-        <a class="pagination__arrow" href="?page=<?= $currentPage + 1 ?>">→</a>
+        <a href="?page=<?= $currentPage + 1 ?>&sort=<?= $sort ?>" class="pagination__arrow">→</a>
     <?php endif; ?>
-
 </nav>
 <?php endif; ?>

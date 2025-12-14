@@ -70,11 +70,20 @@ function showUlLinks(string $ulName) {
         <div class="products__container">
             <section>
                 <h3 class="products__title">Zboží</h3>
+                <div class="pagination-sort">
+                    <a href="?sort=old" 
+                    class="pagination-sort__btn <?= $sort === 'old' ? 'active' : '' ?>">
+                        Nejstarší
+                    </a>
+                    <a href="?sort=new" 
+                    class="pagination-sort__btn <?= $sort === 'new' ? 'active' : '' ?>">
+                        Nejnovější
+                    </a>
+                </div>
+
                 <div class="products">
-                    
                     <?php foreach ($products as $product): ?>
                         <article class="product-card">
-
                             <div class="product-img">
                                 <img
                                     src="<?= $product['image_path']
@@ -83,32 +92,26 @@ function showUlLinks(string $ulName) {
                                     alt="<?= htmlspecialchars($product['name']) ?>"
                                 >
                             </div>
-
                             <h3>
                                 <a class="product-text" href="product.php?id=<?= $product['id'] ?>">
                                     <?= htmlspecialchars($product['name']) ?>
                                 </a>
                             </h3>
-
                             <?php
                                 $oldPrice = $product['price'] * 2;
                             ?>
-
                             <div class="product-prevpriceblock">
                                 <h3 class="product-prevprice">
                                     <?= number_format($oldPrice, 0, ',', ' ') ?> Kč
                                 </h3>
                                 <h3>-50%</h3>
                             </div>
-
                             <h3 class="product-price">
                                 <?= number_format($product['price'], 0, ',', ' ') ?> Kč
                             </h3>
-
                             <a href="product.php?id=<?= $product['id'] ?>" class="product-button">
                                 Zobrazit
                             </a>
-
                         </article>
                     <?php endforeach; ?>
                 </div>
