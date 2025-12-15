@@ -33,6 +33,32 @@ function getProductsPaginated(PDO $pdo, int $limit, int $offset, string $sort): 
 }
 
 /**
+ * Načte jeden produkt z databáze podle jeho ID.
+ *
+ * Vrací kompletní informace o produktu (název, popis, cena, obrázek, datum vytvoření),
+ * nebo null, pokud produkt s daným ID neexistuje.
+ *
+ * @param PDO $pdo Připojení k databázi.
+ * @param int $productId ID produktu.
+ *
+ * @return array|null Asociativní pole s daty produktu nebo null.
+ */
+function getProductById(PDO $pdo, int $id): ?array
+{
+    $stmt = $pdo->prepare("
+        SELECT id, name, description, price, image_path
+        FROM products
+        WHERE id = :id
+        LIMIT 1
+    ");
+
+    $stmt->execute([':id' => $id]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $product ?: null;
+}
+
+/**
  * Vrátí celkový počet produktů v databázi.
  *
  * Používá se pro výpočet stránkování.

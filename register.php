@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/session_manager.php';
-require_once 'includes/form_helpers.php';
+require_once __DIR__ . '/includes/session_manager.php';
+require_once __DIR__ . '/includes/UI/form_helpers.php';
 if (isset($_SESSION["user_id"])) {
     header("Location: index.php");
     exit;

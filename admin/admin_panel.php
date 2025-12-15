@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/session_manager.php';
-require_once __DIR__ . '/../includes/form_helpers.php';
+require_once __DIR__ . '/../includes/UI/form_helpers.php';
 if ($_SESSION["user_role"] != "admin") {
     header("Location: ../index.php");
     exit;

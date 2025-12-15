@@ -1,10 +1,10 @@
 <?php
-require_once 'includes/session_manager.php';
-require_once 'includes/dbh.php';
-require_once 'includes/form_helpers.php';
-require_once 'includes/profile/profile_model.php';
-require_once 'includes/profile/profile_contr.php';
-require_once 'includes/profile/profile_view.php';
+require_once __DIR__ . '/includes/session_manager.php';
+require_once __DIR__ . '/includes/dbh.php';
+require_once __DIR__ . '/includes/UI/form_helpers.php';
+require_once __DIR__ . '/includes/profile/profile_model.php';
+require_once __DIR__ . '/includes/profile/profile_contr.php';
+require_once __DIR__ . '/includes/profile/profile_view.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: index.php");
@@ -36,7 +36,7 @@ $email = getUserField("email", $pdo);
             <nav>
                 <ul class="header__ul">
                     <?php
-                        showUlLinks('header', $_SESSION["user_role"]);
+                        showProfileUlLinks('header', $_SESSION["user_role"]);
                     ?>
                 </ul>
             </nav>
@@ -46,7 +46,7 @@ $email = getUserField("email", $pdo);
                     <ul class="burger__ul">
                         <li><button id="burger-exitButton" class="burger__exitButton">×</button></li>
                         <?php
-                            showUlLinks('burger', $_SESSION["user_role"]);
+                            showProfileUlLinks('burger', $_SESSION["user_role"]);
                         ?>
                     </ul>
                 </nav>

@@ -88,3 +88,27 @@ function validateProduct(array $data): array
 
     return $errors;
 }
+
+/**
+ * Načte produkt pro stránku detailu produktu.
+ *
+ * - Ověří existenci produktu podle ID.
+ * - Pokud produkt neexistuje, provede přesměrování (např. na hlavní stránku).
+ * - Vrací data produktu připravená pro zobrazení ve view.
+ *
+ * @param PDO $pdo Připojení k databázi.
+ * @param int $productId ID produktu z URL.
+ *
+ * @return array Data produktu pro šablonu.
+ */
+function loadProduct(PDO $pdo, int $id): array
+{
+    $product = getProductById($pdo, $id);
+
+    if (!$product) {
+        header("Location: index.php");
+        exit;
+    }
+
+    return $product;
+}
