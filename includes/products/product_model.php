@@ -59,6 +59,33 @@ function getProductById(PDO $pdo, int $id): ?array
 }
 
 /**
+ * Vrátí produkty podle pole ID (pro košík).
+ *
+ * @param PDO   $pdo
+ * @param int[] $ids
+ *
+ * @return array
+ */
+function getProductsByIds(PDO $pdo, array $ids): array
+{
+    if (empty($ids)) {
+        return [];
+    }
+
+    $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+    $stmt = $pdo->prepare("
+        SELECT id, name, price, image_path
+        FROM products
+        WHERE id IN ($placeholders)
+    ");
+
+    $stmt->execute($ids);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
  * Vrátí celkový počet produktů v databázi.
  *
  * Používá se pro výpočet stránkování.

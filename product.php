@@ -55,14 +55,17 @@ $oldPrice = $product['price'] * 2;
         </div>
     </header>
     <main class="product-detail">
-        <a href="javascript:history.back()" class="product-detail__back">
+        <a href="javascript:history.back()" class="back-btn">
             ← Zpět
         </a>
         <div class="product-detail__container">
             <div class="product-detail__img">
-                <?php if ($product['image_path']): ?>
-                    <img src="uploads/products/<?= htmlspecialchars($product['image_path']) ?>" alt="">
-                <?php endif; ?>
+                <img
+                    src="<?= $product['image_path']
+                        ? 'uploads/products/' . htmlspecialchars($product['image_path'])
+                        : 'assets/img/no-image.png' ?>"
+                    alt="<?= htmlspecialchars($product['name']) ?>"
+                >
             </div>
     
             <div class="product-detail__info">
