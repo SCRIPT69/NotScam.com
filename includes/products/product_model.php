@@ -86,6 +86,22 @@ function getProductsByIds(PDO $pdo, array $ids): array
 }
 
 /**
+ * Načte všechny produkty z databáze.
+ *
+ * @param PDO $pdo Aktivní databázové připojení.
+ *
+ * @return array Seznam všech produktů jako asociativní pole.
+ */
+function getAllProducts(PDO $pdo): array {
+    $stmt = $pdo->query("
+        SELECT id, name, price, image_path
+        FROM products
+        ORDER BY created_at DESC
+    ");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
  * Vrátí celkový počet produktů v databázi.
  *
  * Používá se pro výpočet stránkování.
@@ -128,6 +144,83 @@ function insertProductBaseInfo(PDO $pdo, string $name, string $description, floa
 }
 
 /**
+ * Aktualizuje základní údaje produktu v databázi.
+ *
+ * Upravuje název, popis a cenu produktu podle jeho ID.
+ * Neřeší obrázek produktu.
+ *
+ * @param PDO    $pdo         Aktivní PDO instance.
+ * @param int    $productId  ID produktu.
+ * @param string $name        Nový název produktu.
+ * @param string $description Nový popis produktu.
+ * @param float  $price       Nová cena produktu.
+ *
+ * @return void
+ */
+function updateProductBaseInfo(
+    PDO $pdo,
+    int $productId,
+    string $name,
+    string $description,
+    float $price
+): void {
+    $stmt = $pdo->prepare("
+        UPDATE products
+        SET name = :name,
+            description = :description,
+            price = :price
+        WHERE id = :id
+    ");
+
+    $stmt->execute([
+        ':name' => $name,
+        ':description' => $description,
+        ':price' => $price,
+        ':id' => $productId
+    ]);
+}
+
+/**
+ * Nahradí obrázek produktu novým.
+ *
+ * - Načte aktuální produkt z DB
+ * - Pokud existuje starý obrázek, smaže ho
+ * - Uloží nový obrázek pod názvem "<productId>.<ext>"
+ * - Aktualizuje image_path v databázi
+ *
+ * @param PDO   $pdo
+ * @param int   $productId
+ * @param array $file  Nahraný soubor z $_FILES
+ *
+ * @return bool True při úspěchu, false při chybě
+ */
+function replaceProductImage(PDO $pdo, int $productId, array $file): bool
+{
+    $product = getProductById($pdo, $productId);
+
+    if (!$product) {
+        return false;
+    }
+
+    // Smazání starého obrázku, pokud existuje
+    if (!empty($product['image_path'])) {
+        deleteProductImageFile($product['image_path']);
+    }
+
+    // Uložení nového obrázku
+    $newImageName = saveProductImageById($file, $productId);
+
+    if ($newImageName === false) {
+        return false;
+    }
+
+    // Aktualizace cesty v DB
+    updateProductImagePath($pdo, $productId, $newImageName);
+
+    return true;
+}
+
+/**
  * Uloží nahraný obrázek produktu pod názvem založeným na ID produktu.
  *
  * Název souboru má formát: "<productId>.<přípona>".
@@ -158,6 +251,29 @@ function saveProductImageById(array $file, int $productId): false|string
 }
 
 /**
+ * Smaže soubor obrázku produktu ze souborového systému.
+ *
+ * Funkce bezpečně ověří existenci souboru v adresáři uploads/products
+ * a pokud soubor existuje, odstraní ho pomocí unlink().
+ *
+ * Používá se při:
+ * - mazání produktu
+ * - nahrazení obrázku novým
+ *
+ * @param string $imagePath Název souboru obrázku uložený v databázi.
+ *
+ * @return void
+ */
+function deleteProductImageFile(string $imagePath): void
+{
+    $fullPath = __DIR__ . '/../../uploads/products/' . $imagePath;
+
+    if (file_exists($fullPath)) {
+        unlink($fullPath);
+    }
+}
+
+/**
  * Aktualizuje cestu k obrázku v databázi pro daný produkt.
  *
  * @param PDO $pdo Aktivní PDO instance.
@@ -173,18 +289,35 @@ function updateProductImagePath(PDO $pdo, int $id, string $imageName): void
 }
 
 /**
- * Odstraní produkt z databáze podle jeho ID.
+ * Odstraní produkt z databáze včetně jeho obrázku (pokud existuje).
  *
- * Poznámka: Funkce nemaže fyzický obrázek ze souborového systému.
- * Mazání souboru je případně nutné řešit zvlášť.
+ * - Načte cestu k obrázku z DB
+ * - Smaže soubor z uploads/products, pokud existuje
+ * - Odstraní záznam produktu z databáze
  *
- * @param PDO $pdo        Aktivní PDO instance.
- * @param int $productId  ID produktu, který má být smazán.
+ * @param PDO $pdo       Aktivní PDO instance.
+ * @param int $productId ID produktu, který má být smazán.
  *
  * @return void
  */
 function deleteProductById(PDO $pdo, int $productId): void
 {
+    // Zjistíme, zda má produkt obrázek
+    $stmt = $pdo->prepare("
+        SELECT image_path
+        FROM products
+        WHERE id = :id
+        LIMIT 1
+    ");
+    $stmt->execute([":id" => $productId]);
+    $imagePath = $stmt->fetchColumn();
+
+    // Pokud existuje obrázek, smažeme soubor
+    if ($imagePath) {
+        deleteProductImageFile($imagePath);
+    }
+
+    // Smažeme produkt z databáze
     $stmt = $pdo->prepare("DELETE FROM products WHERE id = :id");
     $stmt->execute([":id" => $productId]);
 }

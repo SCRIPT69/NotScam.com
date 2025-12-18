@@ -1,10 +1,13 @@
 <?php
+require_once __DIR__ . '/../includes/dbh.php';
 require_once __DIR__ . '/../includes/session_manager.php';
 require_once __DIR__ . '/../includes/UI/form_helpers.php';
+require_once __DIR__ . '/../includes/products/product_model.php';
 if ($_SESSION["user_role"] != "admin") {
     header("Location: ../index.php");
     exit;
 }
+$products = getAllProducts($pdo);
 ?>
 <!DOCTYPE html>
 <html lang="cs">
@@ -49,7 +52,7 @@ if ($_SESSION["user_role"] != "admin") {
     </header>
     <main>
         <section class="admin_panel">
-            <form id="productform" class="admin_panel__container" action="../includes/products/product_create.php" method="POST" enctype="multipart/form-data">
+            <form id="productform" class="admin_panel__container" action="product/product_create.php" method="POST" enctype="multipart/form-data">
 
                 <h3>Přidat nový produkt</h3>
 
@@ -89,12 +92,14 @@ if ($_SESSION["user_role"] != "admin") {
                         <input id="image" name="image" type="file" class="admin_panel__input admin_panel__input-file <?= inputErrorClass('product', 'image') ?>">
                         <?php
                             generateErrorBlock('product', 'image');
-                            if (isset($_GET["success"])) {
-                                echo '<div class="admin_panel__success">Produkt byl úspěšně přidán!</div>';
-                            }
                         ?>
                     </div>
                 </div>
+                <?php
+                    if (isset($_GET["success"])) {
+                        echo '<div class="admin_panel__success">Produkt byl úspěšně přidán!</div>';
+                    }
+                ?>
 
                 <button id="savebtn" class="admin_panel__button" type="submit">
                     Přidat produkt
@@ -102,17 +107,89 @@ if ($_SESSION["user_role"] != "admin") {
 
             </form>
         </section>
+        <section class="admin_panel">
+            <div class="admin_panel__container">
+                <h3>Seznam produktů</h3>
 
+                <?php foreach ($products as $product): ?>
+                    <div class="admin-product__container">
+                        <img
+                            src="<?= $product['image_path']
+                                ? '../uploads/products/' . htmlspecialchars($product['image_path'])
+                                : '../assets/img/no-image.png'
+                            ?>"
+                            class="admin-product__img"
+                            alt="product image"
+                        >
+                        <div class="admin-product__infocontainer">
+                            <div>
+                                <strong class="admin-product__title"><?= htmlspecialchars($product['name']) ?></strong>
+                                — <?= number_format($product['price'], 0, ',', ' ') ?> Kč
+                            </div>
+    
+                            <div class="admin_panel__actions">
+                                <a class="admin-product__btn" href="editProduct.php?id=<?= $product['id'] ?>">✏️ Upravit</a>
+    
+                                <form class="deleteproductform" method="post" action="product/product_delete.php">
+                                    <input type="hidden" name="id" value="<?= $product['id'] ?>">
+                                    <button class="admin-product__btn" type="submit">🗑️ Smazat</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <section class="admin_panel">
+            <div class="admin_panel__container">
+                <h3>Správa uživatelů</h3>
+                <form method="post" action="role/user_role_update.php">
+                    <div class="admin_panel__inputcontainer">
+                        <label class="admin_panel__label">E-mail uživatele:</label>
+                        <div class="admin_panel__containerForError">
+                            <input type="email" name="email" class="admin_panel__input" required>
+                            <?php
+                                generateErrorBlock('role', 'email');
+                            ?>
+                        </div>
+                    </div>
+
+                    <div class="admin_panel__inputcontainer">
+                        <label class="admin_panel__label">Role:</label>
+                        <div class="admin_panel__containerForError">
+                            <select name="newRole" class="admin_panel__input">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                            <?php
+                                generateErrorBlock('role', 'newRole');
+                            ?>
+                        </div>
+                    </div>
+
+                    <button class="admin_panel__button" type="submit">
+                        Změnit roli
+                    </button>
+                    <?php
+                        if (isset($_GET["role_success"])) {
+                            echo '<div class="admin_panel__success">Role uživatele byla úspěšně změněna!</div>';
+                        }
+                    ?>
+                </form>
+            </div>
+        </section>
     </main>
     <footer>
         <p>© 2025 NotScam.com</p>
     </footer>
 
     <script src="../assets/js/UI/burger.js"></script>
+    <script src="../assets/js/UI/confirmDeletingProduct.js"></script>
     <script type="module" src="../assets/js/validation/validation_product.js"></script>
 </body>
 </html>
 
 <?php
     clearValidationSessions("product");
+    clearValidationSessions("role");
 ?>

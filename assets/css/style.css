@@ -962,8 +962,11 @@ footer {
   padding: 0 22rem;
   color: rgb(49, 49, 49);
 }
+.admin_panel:last-child {
+  margin-bottom: 5rem;
+}
 .admin_panel__container {
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
   padding: 1.5rem 2rem;
   border-radius: 20px;
   background-color: rgb(255,255,255);
@@ -971,7 +974,6 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  margin-bottom: 4rem;
 }
 .admin_panel__container h3 {
   text-align: center;
@@ -1041,7 +1043,46 @@ footer {
 .admin_panel .auth__input-error {
   border: 1px solid red;
 }
-
+.admin_panel .back-btn {
+  display: inline-block;
+  margin-top: 0.6rem;
+}
+.admin_panel__editcontainer {
+  margin-top: 0.6rem;
+}
+.admin-product__container {
+  display: flex;
+  gap: 1rem;
+}
+.admin-product__infocontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.admin-product__img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.admin-product__title {
+  font-size: 1.2rem;
+}
+.admin-product__btn {
+  background: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: rgb(79, 45, 153);
+  transition: color 0.2s ease;
+}
+.admin-product__btn:hover {
+  color: rgb(225, 211, 16);
+}
+.admin-product__actualimg {
+  max-width:150px;
+  border-radius:10px;
+}
 @media (max-width: 1300px) {
   .admin_panel {
     padding: 0 10rem;

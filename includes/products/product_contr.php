@@ -6,12 +6,19 @@ require_once __DIR__ . '/../validation/validators.php';
 
 /**
  * Controller pro vytváření produktů.
+ * 
+ * - Provede validaci vstupních dat (název, popis, cena, obrázek).
+ * - Při chybě uloží validační chyby a data do session.
+ * - Vloží produkt do databáze bez obrázku a získá jeho ID.
+ * - Pokud je nahrán obrázek, uloží ho pod názvem "<productId>.<ext>".
+ * - Aktualizuje cestu k obrázku v databázi.
+ * - Při selhání ukládání obrázku odstraní právě vytvořený produkt.
  *
- * - Validuje vstupní data.
- * - Vloží produkt do DB bez obrázku.
- * - Uloží obrázek pod názvem ID (např. "15.jpg").
- * - Aktualizuje image_path v DB.
- * - Vrací true/false podle úspěchu.
+ * @param array $data  Data produktu z formuláře (včetně $_FILES).
+ * @param PDO   $pdo   Aktivní databázové připojení.
+ * @param int   $userId ID administrátora, který produkt vytváří.
+ *
+ * @return bool True při úspěšném vytvoření produktu, false při chybě.
  */
 function createProduct(array $data, PDO $pdo, int $userId): bool
 {
@@ -59,6 +66,50 @@ function createProduct(array $data, PDO $pdo, int $userId): bool
 
     // UPDATE image_path
     updateProductImagePath($pdo, $productId, $savedImageName);
+
+    return true;
+}
+
+/**
+ * Aktualizuje existující produkt.
+ *
+ * - Provede validaci vstupních dat
+ * - Při chybě uloží validační zprávy do session
+ * - Aktualizuje základní údaje produktu (název, popis, cena)
+ * - Pokud je nahrán nový obrázek, nahradí původní
+ *
+ * @param array $data Data produktu z formuláře (včetně ID a případně obrázku)
+ * @param PDO $pdo Aktivní databázové připojení
+ *
+ * @return bool True při úspěchu, false při chybě validace
+ */
+function updateProduct(array $data, PDO $pdo): bool
+{
+    // Validace dat
+    $errors = validateProduct($data);
+    if (!empty($errors)) {
+        $_SESSION["product-errors"] = $errors;
+        $_SESSION["product-data"] = [
+            "name" => $data["name"],
+            "description" => $data["description"],
+            "price" => $data["price"],
+        ];
+        return false;
+    }
+
+    unset($_SESSION["product-errors"], $_SESSION["product-data"]);
+
+    updateProductBaseInfo(
+        $pdo,
+        $data['id'],
+        $data['name'],
+        $data['description'],
+        (float)$data['price']
+    );
+
+    if (isset($data['image']) && $data['image']['error'] === UPLOAD_ERR_OK) {
+        replaceProductImage($pdo, $data['id'], $data['image']);
+    }
 
     return true;
 }

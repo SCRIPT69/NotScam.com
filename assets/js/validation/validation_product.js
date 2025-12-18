@@ -1,7 +1,6 @@
 import { setError, clearError } from "./errorRenderer.js";
 import { checkPriceForErrors, runBasicValueChecks } from "./validators.js";
 
-
 function validateProductForm(event) {
     let hasErrors = false;
 
