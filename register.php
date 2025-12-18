@@ -108,7 +108,7 @@ if (isset($_SESSION["user_id"])) {
                 </div>
                 <div class="auth__checkboxcontainer">
                     <input class="auth__checkbox" type="checkbox" name="checkboxagree" id="checkboxagree" <?php if (getFormData('register', 'checkboxagree')) echo "checked";?>>
-                    <label class="auth__checkboxlabel" for="checkboxagree">Souhlasím s <a href="">obchodními podmínkami</a></label>
+                    <label class="auth__checkboxlabel" for="checkboxagree">Souhlasím s <a href="conditions.php">obchodními podmínkami</a></label>
                     <?php
                         generateErrorBlock('register', 'checkboxagree');
                     ?>
