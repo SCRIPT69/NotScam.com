@@ -108,7 +108,7 @@ $email = getUserField("email", $pdo);
                             ?>
                         </div>
                     </div>
-                    <button id="deleteAccountBtn" class="profile__deletebutton">Smazat účet</button>
+                    <button type="button" id="deleteAccountBtn" class="profile__deletebutton">Smazat účet</button>
                 </div>
                 <?php 
                     if (!isset($_SESSION["profile-data"])) {

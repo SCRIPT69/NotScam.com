@@ -49,11 +49,15 @@ if (!empty($cartIds)) {
             </nav>
             <div id="burger" class="burger"><span></span></div>
             <div id="burger-menu" class="burger__menu">
-                <li><button id="burger-exitButton" class="burger__exitButton">×</button></li>
-                <li><a class="burger__ul__link" href="index.php">Hlavní stránka</a></li>
-                <li><a class="burger__ul__link" href="profile.php">Můj profil</a></li>
-                <li><a class="burger__ul__link_chosen" href="cart.php">🛒Košík</a></li>
-                <li><a class="burger__ul__link" href="logout.php">Odhlásit se</a></li>
+                <nav>
+                    <ul class="burger__ul">
+                        <li><button id="burger-exitButton" class="burger__exitButton">×</button></li>
+                        <li><a class="burger__ul__link" href="index.php">Hlavní stránka</a></li>
+                        <li><a class="burger__ul__link" href="profile.php">Můj profil</a></li>
+                        <li><a class="burger__ul__link_chosen" href="cart.php">🛒Košík</a></li>
+                        <li><a class="burger__ul__link" href="logout.php">Odhlásit se</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </header>

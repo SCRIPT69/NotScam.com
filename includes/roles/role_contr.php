@@ -23,7 +23,7 @@ require_once __DIR__ . '/role_model.php';
 function changeUserRole(string $email, string $newRole, int $currentAdminId, PDO $pdo): bool {
 
     if (!in_array($newRole, ['user', 'admin'], true)) {
-        return 'Neplatná role';
+        return false;
     }
 
     $user = getUserByEmail($pdo, $email);

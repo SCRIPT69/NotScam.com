@@ -70,4 +70,4 @@
         Podepsán: <em>Generální ředitel vesmíru, Mgr. Scammer Podvodný, PhD.</em></p>
     </div>
 </body>
-</html
+</html>

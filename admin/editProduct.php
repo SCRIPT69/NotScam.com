@@ -78,9 +78,10 @@ if (!$product) {
                 <input type="hidden" name="id" value="<?= $product['id'] ?>">
 
                 <div class="admin_panel__inputcontainer">
-                    <label class="admin_panel__label">Název produktu*:</label>
+                    <label for="name" class="admin_panel__label">Název produktu*:</label>
                     <div class="admin_panel__containerForError">
                         <input
+                            id="name"
                             name="name"
                             class="admin_panel__input <?= inputErrorClass('product', 'name') ?>"
                             value="<?= getFormData('product', 'name') ? getFormData('product', 'name') : htmlspecialchars($product['name']) ?>"
@@ -92,9 +93,10 @@ if (!$product) {
                     </div>
                 </div>
                 <div class="admin_panel__inputcontainer">
-                    <label class="admin_panel__label">Popis*:</label>
+                    <label for="description" class="admin_panel__label">Popis*:</label>
                     <div class="admin_panel__containerForError">
                         <textarea
+                            id="description"
                             name="description"
                             class="admin_panel__textarea <?= inputErrorClass('product', 'description') ?>"
                             required
@@ -106,9 +108,10 @@ if (!$product) {
                     </div>
                 </div>
                 <div class="admin_panel__inputcontainer">
-                    <label class="admin_panel__label">Cena (CZK)*:</label>
+                    <label for="price" class="admin_panel__label">Cena (CZK)*:</label>
                     <div class="admin_panel__containerForError">
                         <input
+                            id="price"
                             name="price"
                             type="number"
                             step="0.01"
@@ -124,7 +127,7 @@ if (!$product) {
 
                 <?php if ($product['image_path']): ?>
                     <div class="admin_panel__inputcontainer">
-                        <label class="admin_panel__label">Aktuální obrázek:</label>
+                        <p class="admin_panel__label">Aktuální obrázek:</p>
                         <img
                             src="<?= $product['image_path']
                                 ? '../uploads/products/' . htmlspecialchars($product['image_path'])
@@ -136,9 +139,9 @@ if (!$product) {
                     </div>
                 <?php endif; ?>
                 <div class="admin_panel__inputcontainer">
-                    <label class="admin_panel__label">Nový obrázek:</label>
+                    <label for="newimg" class="admin_panel__label">Nový obrázek:</label>
                     <div class="admin_panel__containerForError">
-                        <input type="file" name="image" class="admin_panel__input admin_panel__input-file <?= inputErrorClass('product', 'image') ?>">
+                        <input id="newimg" type="file" name="image" class="admin_panel__input admin_panel__input-file <?= inputErrorClass('product', 'image') ?>">
                         <?php
                             generateErrorBlock('product', 'image');
                         ?>

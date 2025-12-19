@@ -145,9 +145,9 @@ $products = getAllProducts($pdo);
                 <h3>Správa uživatelů</h3>
                 <form method="post" action="role/user_role_update.php">
                     <div class="admin_panel__inputcontainer">
-                        <label class="admin_panel__label">E-mail uživatele:</label>
+                        <label for="role-email" class="admin_panel__label">E-mail uživatele:</label>
                         <div class="admin_panel__containerForError">
-                            <input type="email" name="email" class="admin_panel__input" required>
+                            <input id="role-email" type="email" name="role-email" class="admin_panel__input" required>
                             <?php
                                 generateErrorBlock('role', 'email');
                             ?>
@@ -155,9 +155,9 @@ $products = getAllProducts($pdo);
                     </div>
 
                     <div class="admin_panel__inputcontainer">
-                        <label class="admin_panel__label">Role:</label>
+                        <label for="role-select" class="admin_panel__label">Role:</label>
                         <div class="admin_panel__containerForError">
-                            <select name="newRole" class="admin_panel__input">
+                            <select id="role-select" name="newRole" class="admin_panel__input">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
                             </select>

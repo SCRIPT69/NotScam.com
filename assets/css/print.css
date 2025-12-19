@@ -1,6 +1,5 @@
 @media print {
 
-  /* Скрываем то, что на печати не нужно */
   header,
   footer,
   .burger,
