@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 require_once __DIR__ . '/../../includes/session_manager.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
-    $email = trim($_POST['email'] ?? '');
+    $email = trim($_POST['role-email'] ?? '');
     $newRole = $_POST['newRole'] ?? '';
 
     try {
@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION["user_role"]) && $_S
             exit;
         }
 
+        $stmt = $pdo->query("SELECT DATABASE()");
         header('Location: ../admin_panel.php');
         exit();
     }

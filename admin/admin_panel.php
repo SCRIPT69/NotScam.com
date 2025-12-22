@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/dbh.php';
 require_once __DIR__ . '/../includes/session_manager.php';
 require_once __DIR__ . '/../includes/UI/form_helpers.php';
 require_once __DIR__ . '/../includes/products/product_model.php';
-if ($_SESSION["user_role"] != "admin") {
+if (!isset($_SESSION['user_id']) || $_SESSION["user_role"] != "admin") {
     header("Location: ../index.php");
     exit;
 }
@@ -24,7 +24,7 @@ $products = getAllProducts($pdo);
 <body>
     <header>
         <div class="header__container">
-            <a href="index.php" class="logo">
+            <a href="../index.php" class="logo">
                 <img class="logo__icon" src="../assets/img/iconlogo.png" alt="icon logo">
                 <h1 class="logo__text">NotScam<span class="logo__smallerpart">.com</span></h1>
             </a>

@@ -37,7 +37,7 @@ if (!$product) {
 <body>
     <header>
         <div class="header__container">
-            <a href="index.php" class="logo">
+            <a href="../index.php" class="logo">
                 <img class="logo__icon" src="../assets/img/iconlogo.png" alt="icon logo">
                 <h1 class="logo__text">NotScam<span class="logo__smallerpart">.com</span></h1>
             </a>

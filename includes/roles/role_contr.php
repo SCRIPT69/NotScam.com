@@ -21,21 +21,20 @@ require_once __DIR__ . '/role_model.php';
  * @return bool True při úspěšné změně role, false při validační chybě
  */
 function changeUserRole(string $email, string $newRole, int $currentAdminId, PDO $pdo): bool {
-
     if (!in_array($newRole, ['user', 'admin'], true)) {
-        return false;
+        $errors['newRole'] = 'Neplatná role';
     }
-
+    
     $user = getUserByEmail($pdo, $email);
     $errors = [];
 
     if (!$user) {
         $errors["email"] = 'Uživatel nenalezen';
     }
-    if ((int)$user['id'] === $currentAdminId) {
+    else if ((int)$user['id'] === $currentAdminId) {
         $errors["email"] = 'Nemůžete změnit vlastní roli';
     }
-    if ($user['role'] === $newRole) {
+    else if ($user['role'] === $newRole) {
         $errors["newRole"] = 'Uživatel už tuto roli má';
     }
 
