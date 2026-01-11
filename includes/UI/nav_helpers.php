@@ -15,16 +15,16 @@ declare(strict_types=1);
  */
 function showMainPageUlLinks(string $ulName): void {
     echo '<li><a class="'.$ulName.'__ul__link_chosen" href="index.php">Hlavní stránka</a></li>';
-    if (!isset($_SESSION["user_id"])) {
+    if (!isset($_SESSION["user_id"]) || !isset($_SESSION["user_role"])) {
         echo '<li><a class="'.$ulName.'__ul__link" href="login.php">Přihlášení</a></li>';
         echo '<li><a class="'.$ulName.'__ul__link" href="register.php">Registrace</a></li>';
     }
     else {
         echo '<li><a class="'.$ulName.'__ul__link" href="profile.php">Můj profil</a></li>';
-        if ($_SESSION["user_role"] == "user") {
+        if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "user") {
             echo '<li><a class="'.$ulName.'__ul__link" href="cart.php">🛒Košík</a></li>';
         }
-        else if ($_SESSION["user_role"] == "admin") {
+        else if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
             echo '<li><a class="'.$ulName.'__ul__link" href="admin/admin_panel.php">Admin panel</a></li>';
         }
 

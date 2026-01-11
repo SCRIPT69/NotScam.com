@@ -221,15 +221,92 @@ function replaceProductImage(PDO $pdo, int $productId, array $file): bool
 }
 
 /**
- * Uloží nahraný obrázek produktu pod názvem založeným na ID produktu.
+ * Změní velikost obrázku na pevnou šířku (se zachováním poměru stran)
+ * a uloží ho do cílové cesty.
  *
- * Název souboru má formát: "<productId>.<přípona>".
- * Funkce předpokládá, že nahraný soubor již prošel validací.
+ * Pokud není dostupné GD rozšíření, vrací false.
  *
- * @param array $file      Soubor nahraný přes $_FILES.
- * @param int   $productId ID produktu, ke kterému obrázek patří.
+ * @param string $sourcePath  Dočasná cesta k nahranému souboru
+ * @param string $targetPath  Cílová cesta (uploads/products/...)
+ * @param int    $targetWidth Požadovaná šířka (např. 400px)
  *
- * @return string|false Název uloženého souboru při úspěchu, nebo false při chybě.
+ * @return bool
+ */
+function resizeAndSaveImage(string $sourcePath, string $targetPath, int $targetWidth): bool
+{
+    if (!extension_loaded('gd')) {
+        return false;
+    }
+
+    $info = getimagesize($sourcePath);
+    if ($info === false) {
+        return false;
+    }
+
+    [$width, $height, $type] = $info;
+
+    $ratio = $height / $width;
+    $targetHeight = (int)($targetWidth * $ratio);
+
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            $srcImage = imagecreatefromjpeg($sourcePath);
+            break;
+        case IMAGETYPE_PNG:
+            $srcImage = imagecreatefrompng($sourcePath);
+            break;
+        case IMAGETYPE_WEBP:
+            $srcImage = imagecreatefromwebp($sourcePath);
+            break;
+        default:
+            return false;
+    }
+
+    if (!$srcImage) {
+        return false;
+    }
+
+    $dstImage = imagecreatetruecolor($targetWidth, $targetHeight);
+
+    // PNG / WEBP transparent background
+    if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_WEBP) {
+        imagealphablending($dstImage, false);
+        imagesavealpha($dstImage, true);
+    }
+
+    imagecopyresampled(
+        $dstImage,
+        $srcImage,
+        0, 0, 0, 0,
+        $targetWidth,
+        $targetHeight,
+        $width,
+        $height
+    );
+
+    $saved = match ($type) {
+        IMAGETYPE_JPEG => imagejpeg($dstImage, $targetPath, 85),
+        IMAGETYPE_PNG  => imagepng($dstImage, $targetPath),
+        IMAGETYPE_WEBP => imagewebp($dstImage, $targetPath),
+        default        => false,
+    };
+
+    imagedestroy($srcImage);
+    imagedestroy($dstImage);
+
+    return $saved;
+}
+
+/**
+ * Uloží obrázek produktu ve sjednoceném rozměru.
+ *
+ * - Pokusí se obrázek zmenšit pomocí GD
+ * - Pokud GD není dostupné, uloží originál (fallback)
+ *
+ * @param array $file
+ * @param int   $productId
+ *
+ * @return string|false
  */
 function saveProductImageById(array $file, int $productId): false|string
 {
@@ -239,16 +316,27 @@ function saveProductImageById(array $file, int $productId): false|string
         mkdir($uploadDir, 0777, true);
     }
 
-    $ext = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
-    $newName = $productId . "." . $ext;
-    $path = $uploadDir . $newName;
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $fileName = $productId . '.' . $ext;
+    $targetPath = $uploadDir . $fileName;
 
-    if (!move_uploaded_file($file["tmp_name"], $path)) {
-        return false;
+    // 1Pokus o resize (server)
+    $resized = resizeAndSaveImage(
+        $file['tmp_name'],
+        $targetPath,
+        400 // ← finální šířka obrázku (catalog)
+    );
+
+    // Fallback (lokální XAMPP bez GD)
+    if (!$resized) {
+        if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+            return false;
+        }
     }
 
-    return $newName;
+    return $fileName;
 }
+
 
 /**
  * Smaže soubor obrázku produktu ze souborového systému.

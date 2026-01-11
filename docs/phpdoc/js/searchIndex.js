@@ -198,13 +198,18 @@ Search.appendIndex(
         },                {
             "fqsen": "\\changeUserRole\u0028\u0029",
             "name": "changeUserRole",
-            "summary": "Zm\u011Bn\u00ED\u0020roli\u0020u\u017Eivatele\u0020podle\u0020jeho\u0020e\u002Dmailu.",
+            "summary": "Zm\u011Bn\u00ED\u0020roli\u0020u\u017Eivatele\u0020podle\u0020jeho\u0020id.",
             "url": "namespaces/default.html#function_changeUserRole"
         },                {
-            "fqsen": "\\getUserByEmail\u0028\u0029",
-            "name": "getUserByEmail",
-            "summary": "Na\u010Dte\u0020u\u017Eivatele\u0020podle\u0020e\u002Dmailu.",
-            "url": "namespaces/default.html#function_getUserByEmail"
+            "fqsen": "\\getAllUsers\u0028\u0029",
+            "name": "getAllUsers",
+            "summary": "Na\u010Dte\u0020seznam\u0020v\u0161ech\u0020u\u017Eivatel\u016F\u0020\u0028pro\u0020admin\u0020panel\u0029.",
+            "url": "namespaces/default.html#function_getAllUsers"
+        },                {
+            "fqsen": "\\getUserById\u0028\u0029",
+            "name": "getUserById",
+            "summary": "Na\u010Dte\u0020u\u017Eivatele\u0020podle\u0020id",
+            "url": "namespaces/default.html#function_getUserById"
         },                {
             "fqsen": "\\updateUserRole\u0028\u0029",
             "name": "updateUserRole",

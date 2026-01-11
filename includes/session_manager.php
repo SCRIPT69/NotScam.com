@@ -12,6 +12,18 @@ session_set_cookie_params([
 
 session_start();
 
+
+/**
+ * Ochrana proti nekonzistentní session:
+ */
+if (isset($_SESSION['user_id']) && !isset($_SESSION['user_role']) || !isset($_SESSION['user_id']) && isset($_SESSION['user_role'])) {
+    session_unset();
+    session_destroy();
+    header('Location: /~polecleo/NotScam.com/index.php');
+    exit;
+}
+
+
 if (!isset($_SESSION["session_last_regeneration"])) {
     $_SESSION["session_last_regeneration"] = time();
 }

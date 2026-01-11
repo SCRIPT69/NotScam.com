@@ -16,7 +16,7 @@ require_once __DIR__ . '/../session_manager.php';
 require_once __DIR__ . '/../dbh.php';
 require_once __DIR__ . '/profile_model.php';
 
-if (!isset($_SESSION["user_id"])) {
+if (!isset($_SESSION["user_id"]) || !isset($_SESSION["user_role"])) {
     echo json_encode(["success" => false, "error" => "Nejste přihlášen!"]);
     exit;
 }

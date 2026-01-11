@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ .'/includes/session_manager.php';
 require_once __DIR__ .'/includes/UI/form_helpers.php';
-if (isset($_SESSION["user_id"])) {
+if (isset($_SESSION["user_id"]) || isset($_SESSION["user_role"])) {
     header("Location: index.php");
     exit;
 }

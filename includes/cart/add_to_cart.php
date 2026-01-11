@@ -5,7 +5,7 @@ header("Content-Type: application/json");
 
 require_once __DIR__ . '/../session_manager.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'user') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'user') {
     echo json_encode(["success" => false, "error" => "Nepřihlášen"]);
     exit;
 }

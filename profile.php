@@ -6,7 +6,7 @@ require_once __DIR__ . '/includes/profile/profile_model.php';
 require_once __DIR__ . '/includes/profile/profile_contr.php';
 require_once __DIR__ . '/includes/profile/profile_view.php';
 
-if (!isset($_SESSION["user_id"])) {
+if (!isset($_SESSION["user_id"]) || !isset($_SESSION["user_role"])) {
     header("Location: index.php");
     exit;
 }
@@ -57,7 +57,7 @@ $email = getUserField("email", $pdo);
         <section class="profile">
             <form class="profile__container" action="includes/profile/profile_savingChangedData.php" method="POST" id="profileform">
                 <?php
-                    echo '<h3>Dobrý den, '.htmlspecialchars($name, ENT_QUOTES, "UTF-8").'!</h3>';
+                    echo '<h2>Dobrý den, '.htmlspecialchars($name, ENT_QUOTES, "UTF-8").'!</h2>';
                 ?>
                 <div class="profile__inputcontainer">
                     <label class="profile__label" for="name">Jméno: </label>

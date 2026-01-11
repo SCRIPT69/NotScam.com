@@ -2,22 +2,38 @@
 declare(strict_types=1);
 
 /**
- * Načte uživatele podle e-mailu.
+ * Načte seznam všech uživatelů (pro admin panel).
+ *
+ * @param PDO $pdo
+ * @return array
+ */
+function getAllUsers(PDO $pdo): array
+{
+    $stmt = $pdo->query("
+        SELECT id, email, name, role
+        FROM users
+        ORDER BY created_at DESC
+    ");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Načte uživatele podle id
  *
  * @param PDO $pdo Aktivní databázové připojení
- * @param string $email
+ * @param string $id
  *
  * @return array|null Asociativní pole s daty uživatele nebo null
  */
-function getUserByEmail(PDO $pdo, string $email): ?array
+function getUserById(PDO $pdo, string $id): ?array
 {
     $stmt = $pdo->prepare("
-        SELECT id, role
+        SELECT id, name, email, role
         FROM users
-        WHERE email = :email
+        WHERE id = :id
         LIMIT 1
     ");
-    $stmt->execute([':email' => $email]);
+    $stmt->execute([':id' => $id]);
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 

@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/dbh.php';
 require_once __DIR__ . '/../includes/products/product_model.php';
 require_once __DIR__ . '/../includes/UI/form_helpers.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
 }
@@ -73,7 +73,7 @@ if (!$product) {
                 method="POST"
                 enctype="multipart/form-data">
 
-                <h3>Upravit produkt</h3>
+                <h2>Upravit produkt</h2>
 
                 <input type="hidden" name="id" value="<?= $product['id'] ?>">
 

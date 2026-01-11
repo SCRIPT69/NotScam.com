@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/session_manager.php';
 require_once __DIR__ . '/includes/dbh.php';
 require_once __DIR__ . '/includes/products/product_model.php';
 
-if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== "user") {
+if (!isset($_SESSION["user_id"]) || !isset($_SESSION["user_role"]) || $_SESSION["user_role"] !== "user") {
     header("Location: index.php");
     exit;
 }
@@ -76,7 +76,7 @@ if (!empty($cartIds)) {
                             alt="<?= htmlspecialchars($product['name']) ?>"
                         >
                         <div class="cart-item__info">
-                            <h3 class="cart-item__name"><?= htmlspecialchars($product['name']) ?></h3>
+                            <h2 class="cart-item__name"><?= htmlspecialchars($product['name']) ?></h2>
                             <p class="cart-item__price"><?= number_format($product['price'], 0, ',', ' ') ?> Kč</p>
     
                             <form method="post" action="includes/cart/remove_from_cart.php">

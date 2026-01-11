@@ -3,11 +3,13 @@ require_once __DIR__ . '/../includes/dbh.php';
 require_once __DIR__ . '/../includes/session_manager.php';
 require_once __DIR__ . '/../includes/UI/form_helpers.php';
 require_once __DIR__ . '/../includes/products/product_model.php';
-if (!isset($_SESSION['user_id']) || $_SESSION["user_role"] != "admin") {
+require_once __DIR__ . '/../includes/roles/role_model.php';
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION["user_role"] != "admin") {
     header("Location: ../index.php");
     exit;
 }
 $products = getAllProducts($pdo);
+$users = getAllUsers($pdo);
 ?>
 <!DOCTYPE html>
 <html lang="cs">
@@ -54,7 +56,7 @@ $products = getAllProducts($pdo);
         <section class="admin_panel">
             <form id="productform" class="admin_panel__container" action="product/product_create.php" method="POST" enctype="multipart/form-data">
 
-                <h3>Přidat nový produkt</h3>
+                <h2>Přidat nový produkt</h2>
 
                 <div class="admin_panel__inputcontainer">
                     <label for="name" class="admin_panel__label">Název produktu*:</label>
@@ -109,7 +111,7 @@ $products = getAllProducts($pdo);
         </section>
         <section class="admin_panel">
             <div class="admin_panel__container">
-                <h3>Seznam produktů</h3>
+                <h2>Seznam produktů</h2>
 
                 <?php foreach ($products as $product): ?>
                     <div class="admin-product__container">
@@ -142,40 +144,29 @@ $products = getAllProducts($pdo);
         </section>
         <section class="admin_panel">
             <div class="admin_panel__container">
-                <h3>Správa uživatelů</h3>
-                <form method="post" action="role/user_role_update.php">
-                    <div class="admin_panel__inputcontainer">
-                        <label for="role-email" class="admin_panel__label">E-mail uživatele:</label>
-                        <div class="admin_panel__containerForError">
-                            <input id="role-email" type="email" name="role-email" class="admin_panel__input" required>
-                            <?php
-                                generateErrorBlock('role', 'email');
-                            ?>
+                <h2>Seznam uživatelů</h2>
+                <?php foreach ($users as $user): ?>
+                    <div class="admin-user__container">
+                        <div class="admin-user__info">
+                            <div>
+                                <div class="admin-user__email">
+                                    <?= htmlspecialchars($user['email']) ?>
+                                </div>
+                            </div>
+
+                            <div class="admin-user__role">
+                                <?= htmlspecialchars($user['role']) ?>
+                            </div>
+                        </div>
+
+                        <div class="admin_panel__actions">
+                            <a class="admin-product__btn"
+                            href="user_detail.php?id=<?= $user['id'] ?>">
+                                👁️ Zobrazit
+                            </a>
                         </div>
                     </div>
-
-                    <div class="admin_panel__inputcontainer">
-                        <label for="role-select" class="admin_panel__label">Role:</label>
-                        <div class="admin_panel__containerForError">
-                            <select id="role-select" name="newRole" class="admin_panel__input">
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                            <?php
-                                generateErrorBlock('role', 'newRole');
-                            ?>
-                        </div>
-                    </div>
-
-                    <button class="admin_panel__button" type="submit">
-                        Změnit roli
-                    </button>
-                    <?php
-                        if (isset($_GET["role_success"])) {
-                            echo '<div class="admin_panel__success">Role uživatele byla úspěšně změněna!</div>';
-                        }
-                    ?>
-                </form>
+                <?php endforeach; ?>
             </div>
         </section>
     </main>
@@ -191,5 +182,4 @@ $products = getAllProducts($pdo);
 
 <?php
     clearValidationSessions("product");
-    clearValidationSessions("role");
 ?>
